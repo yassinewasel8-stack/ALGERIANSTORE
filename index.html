@@ -137,26 +137,19 @@
         }
 
         .container {
-            max-width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
             padding: 1.5rem 2rem;
             flex: 1;
         }
 
+        /* تنسيق المنتجات للحاسوب (أفقي على شكل شبكة Grid) */
         .products-grid {
-            display: flex;
-            flex-direction: row;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
             gap: 1.5rem;
-            overflow-x: auto;
             padding-bottom: 1.5rem;
-            scroll-behavior: smooth;
-        }
-
-        .products-grid::-webkit-scrollbar {
-            height: 8px;
-        }
-        .products-grid::-webkit-scrollbar-thumb {
-            background: rgba(99, 102, 241, 0.5);
-            border-radius: 4px;
         }
 
         .product-card {
@@ -169,10 +162,7 @@
             backdrop-filter: blur(5px);
             display: flex;
             flex-direction: column;
-            min-width: 280px;
-            max-width: 280px;
-            flex-shrink: 0;
-            position: relative;
+            width: 100%;
         }
 
         .product-card:hover {
@@ -238,6 +228,43 @@
             border-radius: 8px;
             cursor: pointer;
             font-weight: 700;
+        }
+
+        /* التكيف للهاتف (عرض عمودي مريح) */
+        @media (max-width: 768px) {
+            header { flex-direction: column; }
+            .container { padding: 1rem; }
+            
+            .products-grid {
+                display: flex;
+                flex-direction: column; /* ترتيب المنتجات عمودياً */
+                gap: 1rem;
+            }
+
+            .product-card {
+                flex-direction: row; /* عرض بيانات كل منتج بشكل أفقي مدمج */
+                height: 130px;
+                align-items: center;
+            }
+
+            .product-img {
+                width: 120px;
+                height: 100%;
+                flex-shrink: 0;
+            }
+
+            .product-info {
+                padding: 0.8rem;
+                justify-content: space-between;
+            }
+
+            .product-title {
+                font-size: 1rem;
+            }
+
+            .product-price {
+                font-size: 1rem;
+            }
         }
 
         .modal-overlay {
@@ -496,7 +523,6 @@
             .modal-header-flex { flex-direction: column; }
             .gallery-container { width: 100%; }
             .form-row { grid-template-columns: 1fr; }
-            header { flex-direction: column; }
         }
     </style>
 </head>
@@ -665,7 +691,7 @@
                 </form>
             </div>
 
-            <!-- 2. قسم إدارة المنتجات المضافة (حذفها من السحابة) -->
+            <!-- 2. قسم إدارة المنتجات المضافة -->
             <div id="adminManageProductsSection" style="display: none;">
                 <h3 style="margin-bottom: 1rem;">المنتجات المعروضة حالياً</h3>
                 <div class="orders-list" id="adminProductsContainer"></div>
@@ -717,7 +743,6 @@
         let products = [];
         let activeProductId = null;
 
-        // جلب المنتجات المباشرة من السحابة تلقائياً وتحديث الصفحة عند إضافة أي منتج جديد
         function listenToProducts() {
             database.ref('products').on('value', (snapshot) => {
                 const data = snapshot.val();
@@ -746,9 +771,11 @@
                     <div class="product-card" onclick="openProductModal(${product.id})">
                         <img src="${product.image}" class="product-img" alt="${product.title}">
                         <div class="product-info">
-                            <span class="product-category">${product.categoryName || product.category}</span>
-                            <h3 class="product-title">${product.title}</h3>
-                            <div class="product-rating">${starsHtml}</div>
+                            <div>
+                                <span class="product-category">${product.categoryName || product.category}</span>
+                                <h3 class="product-title">${product.title}</h3>
+                                <div class="product-rating">${starsHtml}</div>
+                            </div>
                             <div class="product-bottom">
                                 <span class="product-price">${product.price}</span>
                                 <button class="btn-view">التفاصيل والطلب</button>
@@ -875,7 +902,6 @@
             });
         }
 
-        // رفع وتخزين المنتجات مباشرة في قاعدة بيانات Firebase السحابية
         async function handleAddNewProduct(event) {
             event.preventDefault();
             const btn = document.getElementById('saveProdBtn');
