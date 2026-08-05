@@ -141,7 +141,6 @@
             flex: 1;
         }
 
-        /* عرض المنتجات بشكل أفقـي جنب بعضها */
         .products-grid {
             display: flex;
             flex-direction: row;
@@ -255,7 +254,7 @@
             background: #1e293b;
             border: 1px solid var(--border-color);
             border-radius: 20px;
-            max-width: 700px;
+            max-width: 750px;
             width: 100%;
             max-height: 90vh;
             overflow-y: auto;
@@ -282,11 +281,43 @@
             flex-wrap: wrap;
         }
 
+        .gallery-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 280px;
+        }
+
         .modal-img {
-            width: 250px;
-            height: 200px;
+            width: 100%;
+            height: 220px;
             object-fit: cover;
             border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .thumbnails-list {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        .thumb-img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            opacity: 0.6;
+            border: 1px solid transparent;
+            transition: 0.2s;
+            flex-shrink: 0;
+        }
+
+        .thumb-img.active, .thumb-img:hover {
+            opacity: 1;
+            border-color: var(--accent-color);
         }
 
         .modal-details {
@@ -335,7 +366,7 @@
             color: var(--text-muted);
         }
 
-        .form-group input, .form-group textarea {
+        .form-group input, .form-group textarea, .form-group select {
             background: rgba(0, 0, 0, 0.3);
             border: 1px solid var(--border-color);
             border-radius: 8px;
@@ -345,79 +376,51 @@
             font-size: 0.95rem;
         }
 
+        .form-group input[type="file"] {
+            padding: 0.4rem;
+            cursor: pointer;
+        }
+
+        .form-group select option {
+            background: #1e293b;
+            color: white;
+        }
+
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 1rem;
         }
 
-        .comments-section {
-            border-top: 1px solid var(--border-color);
-            padding-top: 1rem;
-            margin-top: 1.5rem;
-        }
-
-        .star-rating-input {
+        .admin-tabs {
             display: flex;
-            gap: 5px;
-            font-size: 1.5rem;
-            color: #475569;
+            gap: 10px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+        }
+
+        .admin-tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 0.5rem 1rem;
             cursor: pointer;
-            margin: 0.5rem 0;
-        }
-
-        .star-rating-input .fa-star.active {
-            color: var(--gold);
-        }
-
-        .comment-form input, .comment-form textarea {
-            width: 100%;
-            background: rgba(0, 0, 0, 0.2);
-            border: 1px solid var(--border-color);
+            font-weight: 700;
+            font-size: 1rem;
             border-radius: 8px;
-            padding: 0.6rem;
-            color: white;
-            margin-bottom: 0.5rem;
-            outline: none;
+            transition: 0.3s;
         }
 
-        .comment-form button {
+        .admin-tab-btn.active {
             background: var(--accent-color);
             color: white;
-            border: none;
-            padding: 0.6rem 1.2rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 700;
-        }
-
-        .comments-list {
-            margin-top: 1rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-        }
-
-        .comment-item {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 8px;
-            padding: 0.8rem;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .comment-author {
-            font-weight: 700;
-            font-size: 0.9rem;
-            color: var(--accent-color);
-            display: flex;
-            justify-content: space-between;
         }
 
         .orders-list {
             display: flex;
             flex-direction: column;
             gap: 1rem;
-            margin-top: 1rem;
         }
 
         .order-card {
@@ -428,7 +431,6 @@
             display: flex;
             flex-direction: column;
             gap: 0.5rem;
-            position: relative;
         }
 
         .order-card-header {
@@ -477,12 +479,11 @@
             font-weight: 800;
             text-decoration: none;
             margin-top: 10px;
-            transition: 0.3s;
         }
 
         @media(max-width: 600px) {
             .modal-header-flex { flex-direction: column; }
-            .modal-img { width: 100%; }
+            .gallery-container { width: 100%; }
             .form-row { grid-template-columns: 1fr; }
             header { flex-direction: column; }
         }
@@ -490,7 +491,6 @@
 </head>
 <body>
 
-    <!-- الهيدر -->
     <header>
         <div class="logo">
             <i class="fa-solid fa-cart-shopping"></i> متجر الجزائر الإلكتروني
@@ -506,7 +506,6 @@
         </div>
     </header>
 
-    <!-- الأقسام الكثيرة (Categories) -->
     <div class="categories-container">
         <button class="cat-btn active" onclick="filterCategory('all', event)"><i class="fa-solid fa-border-all"></i> الكل</button>
         <button class="cat-btn" onclick="filterCategory('electronics', event)"><i class="fa-solid fa-laptop"></i> إلكترونيات</button>
@@ -518,17 +517,19 @@
         <button class="cat-btn" onclick="filterCategory('movies', event)"><i class="fa-solid fa-film"></i> أفلام وترفيه</button>
     </div>
 
-    <!-- شبكة المنتجات (معروضة بشكل أفقي) -->
     <div class="container">
         <div class="products-grid" id="productsGrid"></div>
     </div>
 
-    <!-- 1. نافذة التفاصيل والطلب -->
+    <!-- نافذة تفاصيل المنتج -->
     <div class="modal-overlay" id="productModal">
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal('productModal')">&times;</button>
             <div class="modal-header-flex">
-                <img id="mImage" class="modal-img" src="" alt="صورة المنتج">
+                <div class="gallery-container">
+                    <img id="mImage" class="modal-img" src="" alt="صورة المنتج">
+                    <div class="thumbnails-list" id="mThumbnails"></div>
+                </div>
                 <div class="modal-details">
                     <span id="mCategory" class="product-category"></span>
                     <h2 id="mTitle"></h2>
@@ -541,34 +542,13 @@
                     </button>
                 </div>
             </div>
-
-            <!-- التعليقات -->
-            <div class="comments-section">
-                <h3><i class="fa-solid fa-comments"></i> آراء وتقييمات الزوار</h3>
-                <div class="comment-form" style="margin-top: 10px;">
-                    <label style="font-size: 0.85rem; color: var(--text-muted);">أضف تقييمك بالنجوم:</label>
-                    <div class="star-rating-input" id="starInput">
-                        <i class="fa-solid fa-star" data-value="1"></i>
-                        <i class="fa-solid fa-star" data-value="2"></i>
-                        <i class="fa-solid fa-star" data-value="3"></i>
-                        <i class="fa-solid fa-star" data-value="4"></i>
-                        <i class="fa-solid fa-star" data-value="5"></i>
-                    </div>
-                    <input type="text" id="commentUser" placeholder="الاسم الكامل">
-                    <textarea id="commentText" rows="3" placeholder="اكتب رأيك حول هذا المنتج..."></textarea>
-                    <button onclick="submitComment()"><i class="fa-solid fa-paper-plane"></i> نشر التعليق</button>
-                </div>
-
-                <div class="comments-list" id="commentsList"></div>
-            </div>
         </div>
     </div>
 
-    <!-- 2. نافذة تقديم الطلب -->
+    <!-- نافذة طلب الشراء -->
     <div class="modal-overlay" id="orderModal">
         <div class="modal-content" style="max-width: 500px;">
             <button class="close-btn" onclick="closeModal('orderModal')">&times;</button>
-            
             <h2 style="margin-bottom: 0.5rem; color: var(--success-color);">
                 <i class="fa-solid fa-file-signature"></i> تقديم طلب شراء
             </h2>
@@ -587,22 +567,18 @@
                         <input type="text" id="custLastName" required placeholder="مثال: يونس">
                     </div>
                 </div>
-
                 <div class="form-group">
                     <label>رقم الهاتف *</label>
                     <input type="tel" id="custPhone" required placeholder="07XXXXXXXX">
                 </div>
-
                 <div class="form-group">
                     <label>العنوان الكامل / الولاية *</label>
                     <input type="text" id="custAddress" required placeholder="البلدية، الولاية">
                 </div>
-
                 <div class="form-group">
                     <label>ملاحظات إضافية (اختياري)</label>
                     <textarea id="custNotes" rows="2" placeholder="أي تفاصيل تود إضافتها للطلب..."></textarea>
                 </div>
-
                 <button type="submit" class="btn-order-now" style="width: 100%; margin-top: 5px;">
                     <i class="fa-solid fa-check-circle"></i> تأكيد وإرسال الطلب
                 </button>
@@ -610,7 +586,7 @@
         </div>
     </div>
 
-    <!-- 3. نافذة تأكيد النجاح للزبون -->
+    <!-- نافذة النجاح -->
     <div class="modal-overlay" id="successModal">
         <div class="modal-content" style="max-width: 450px; text-align: center; padding: 2rem;">
             <i class="fa-solid fa-circle-check" style="font-size: 4rem; color: var(--success-color); margin-bottom: 1rem;"></i>
@@ -620,21 +596,72 @@
         </div>
     </div>
 
-    <!-- 4. نافذة لوحة الأدمن -->
+    <!-- لوحة الأدمن -->
     <div class="modal-overlay" id="adminModal">
         <div class="modal-content" style="max-width: 800px;">
             <button class="close-btn" onclick="closeModal('adminModal')">&times;</button>
             
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem;">
-                <h2><i class="fa-solid fa-user-shield" style="color: var(--danger-color);"></i> لوحة الأدمن</h2>
-                <button class="delete-order-btn" onclick="clearAllOrders()"><i class="fa-solid fa-trash"></i> مسح كافة الطلبات</button>
+            <h2 style="margin-bottom: 1rem;"><i class="fa-solid fa-user-shield" style="color: var(--danger-color);"></i> لوحة التحكم (الأدمن)</h2>
+
+            <div class="admin-tabs">
+                <button class="admin-tab-btn active" onclick="switchAdminTab('add-product', event)"><i class="fa-solid fa-plus-circle"></i> إضافة منتج جديد</button>
+                <button class="admin-tab-btn" onclick="switchAdminTab('orders', event)"><i class="fa-solid fa-list-check"></i> قائمة الطلبات</button>
             </div>
 
-            <div class="orders-list" id="adminOrdersContainer"></div>
+            <!-- 1. قسم إضافة منتج جديد -->
+            <div id="adminAddProductSection">
+                <form class="order-form-container" onsubmit="handleAddNewProduct(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>عنوان المنتج *</label>
+                            <input type="text" id="newProdTitle" required placeholder="مثال: حاسوب محمول">
+                        </div>
+                        <div class="form-group">
+                            <label>السعر *</label>
+                            <input type="text" id="newProdPrice" required placeholder="مثال: 45000 د.ج">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>القسم (Category) *</label>
+                        <select id="newProdCategory" required>
+                            <option value="electronics">إلكترونيات</option>
+                            <option value="clothing">ملابس وأزياء</option>
+                            <option value="books">كتب ومجلات</option>
+                            <option value="courses">كورسات وتدريب</option>
+                            <option value="games">ألعاب وتسلية</option>
+                            <option value="auto">سيارات وقطع غيار</option>
+                            <option value="movies">أفلام وترفيه</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>اختر صور المنتج من الحاسوب: *</label>
+                        <input type="file" id="newProdFiles" accept="image/*" multiple required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>وصف المنتج *</label>
+                        <textarea id="newProdDesc" rows="3" required placeholder="اكتب تفاصيل ومواصفات المنتج هنا..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-order-now" style="width: 100%; margin-top: 10px;">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> رفع ونشر المنتج في المتجر
+                    </button>
+                </form>
+            </div>
+
+            <!-- 2. قسم إدارة الطلبات -->
+            <div id="adminOrdersSection" style="display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h3>الطلبات المسجلة (من السحابة)</h3>
+                    <button class="delete-order-btn" onclick="clearAllOrders()"><i class="fa-solid fa-trash"></i> مسح كافة الطلبات</button>
+                </div>
+                <div class="orders-list" id="adminOrdersContainer"></div>
+            </div>
         </div>
     </div>
 
-    <!-- الفوتر -->
     <footer>
         <div class="footer-banner">
             <h2><i class="fa-solid fa-bullhorn"></i> هل تريد عرض منتجاتك أو خدماتك معنا؟</h2>
@@ -646,10 +673,30 @@
         <p style="color: var(--text-muted); font-size: 0.85rem;">جميع الحقوق محفوظة &copy; 2026 - متجر الجزائر الإلكتروني</p>
     </footer>
 
+    <!-- تحميل مكتبات Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+
     <script>
+        // إعدادات ومفاتيح مشروع Firebase الخاص بك
+        const firebaseConfig = {
+            apiKey: "AIzaSyCUmO8u45HTjFli-kIWKJ6Rn_frK96_wzM",
+            authDomain: "mydzstore.firebaseapp.com",
+            databaseURL: "https://mydzstore-default-rtdb.firebaseio.com",
+            projectId: "mydzstore",
+            storageBucket: "mydzstore.firebasestorage.app",
+            messagingSenderId: "68245133584",
+            appId: "1:68245133584:web:447fd51620c84071dd6d95",
+            measurementId: "G-Q6LECZFZJF"
+        };
+
+        // تهيئة الاتصال بـ Firebase Realtime Database
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
         const ADMIN_PASSWORD = "1234";
 
-        const products = [
+        const defaultProducts = [
             {
                 id: 1,
                 title: "حاسوب محمول للدراسة والبرمجة",
@@ -658,91 +705,28 @@
                 price: "45000 د.ج",
                 rating: 5,
                 image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500",
-                description: "حاسوب محمول بمواصفات ممتازة للدراسة والتصفح والعمل على المشاريع البرمجية.",
-                comments: [{ name: "أحمد", stars: 5, text: "منتج ممتاز وسرعة في التعامل!" }]
-            },
-            {
-                id: 2,
-                title: "قميص رياضي أنيق",
-                category: "clothing",
-                categoryName: "ملابس وأزياء",
-                price: "2500 د.ج",
-                rating: 5,
-                image: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500",
-                description: "قميص قطني خفيف ومناسب للأنشطة الرياضية واليومية.",
-                comments: []
-            },
-            {
-                id: 3,
-                title: "كتاب أساسيات تطوير الويب",
-                category: "books",
-                categoryName: "كتب ومجلات",
-                price: "1500 د.ج",
-                rating: 4,
-                image: "https://images.unsplash.com/photo-1532012197267-da84d127e765?w=500",
-                description: "دليل شامل لشرح HTML, CSS, JavaScript من الصفر حتى الاحتراف.",
-                comments: [{ name: "ياسين", stars: 4, text: "محتوى الكتاب غني ومفيد جداً." }]
-            },
-            {
-                id: 4,
-                title: "دورة شاملة في البرمجة بلغة C",
-                category: "courses",
-                categoryName: "كورسات وتدريب",
-                price: "3000 د.ج",
-                rating: 5,
-                image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500",
-                description: "كورس فيديو مدفوع يشرح الخوارزميات وهياكل البيانات بلغة C خطوة بخطوة.",
-                comments: []
-            },
-            {
-                id: 5,
-                title: "يد تحكم ألعاب لاسلكية",
-                category: "games",
-                categoryName: "ألعاب وتسلية",
-                price: "4200 د.ج",
-                rating: 4,
-                image: "https://images.unsplash.com/photo-1600080972464-8e5f35f63d08?w=500",
-                description: "قبضة تحكم ممتازة ومتوافقة مع الحاسوب وأجهزة الألعاب.",
-                comments: []
-            },
-            {
-                id: 6,
-                title: "شاحن سريع للسيارة",
-                category: "auto",
-                categoryName: "سيارات وقطع غيار",
-                price: "1800 د.ج",
-                rating: 5,
-                image: "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?w=500",
-                description: "منفذ شحن يدعم الشحن السريع لمختلف الهواتف الذكية في السيارة.",
-                comments: []
-            },
-            {
-                id: 7,
-                title: "سلسلة وثائقية: تاريخ التقنية",
-                category: "movies",
-                categoryName: "أفلام وترفيه",
-                price: "800 د.ج",
-                rating: 4,
-                image: "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=500",
-                description: "مجموعة أفلام وثائقية عالية الجودة عن نشأة الكمبيوتر والإنترنت.",
-                comments: []
+                images: [
+                    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500",
+                    "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=500"
+                ],
+                description: "حاسوب محمول بمواصفات ممتازة للدراسة والتصفح والعمل على المشاريع البرمجية."
             }
         ];
 
+        let products = JSON.parse(localStorage.getItem('myStoreProducts')) || defaultProducts;
         let activeProductId = null;
-        let selectedStars = 5;
 
         function displayProducts(items) {
             const grid = document.getElementById('productsGrid');
             grid.innerHTML = '';
             
             items.forEach(product => {
-                const starsHtml = '★'.repeat(product.rating) + '☆'.repeat(5 - product.rating);
+                const starsHtml = '★'.repeat(product.rating || 5);
                 grid.innerHTML += `
                     <div class="product-card" onclick="openProductModal(${product.id})">
                         <img src="${product.image}" class="product-img" alt="${product.title}">
                         <div class="product-info">
-                            <span class="product-category">${product.categoryName}</span>
+                            <span class="product-category">${product.categoryName || product.category}</span>
                             <h3 class="product-title">${product.title}</h3>
                             <div class="product-rating">${starsHtml}</div>
                             <div class="product-bottom">
@@ -772,15 +756,33 @@
             const product = products.find(p => p.id === id);
             activeProductId = id;
 
-            document.getElementById('mImage').src = product.image;
+            const mainImg = document.getElementById('mImage');
+            mainImg.src = product.image;
+
             document.getElementById('mTitle').innerText = product.title;
-            document.getElementById('mCategory').innerText = product.categoryName;
+            document.getElementById('mCategory').innerText = product.categoryName || product.category;
             document.getElementById('mPrice').innerText = product.price;
             document.getElementById('mDesc').innerText = product.description;
-            document.getElementById('mRating').innerHTML = '★'.repeat(product.rating) + '☆'.repeat(5 - product.rating);
+            document.getElementById('mRating').innerHTML = '★'.repeat(product.rating || 5);
 
-            renderComments(product.comments);
+            const thumbsContainer = document.getElementById('mThumbnails');
+            thumbsContainer.innerHTML = '';
+
+            const allImgs = product.images && product.images.length > 0 ? product.images : [product.image];
+
+            allImgs.forEach((imgUrl, index) => {
+                thumbsContainer.innerHTML += `
+                    <img src="${imgUrl}" class="thumb-img ${index === 0 ? 'active' : ''}" onclick="changeModalImage('${imgUrl}', this)">
+                `;
+            });
+
             document.getElementById('productModal').style.display = 'flex';
+        }
+
+        function changeModalImage(imgUrl, el) {
+            document.getElementById('mImage').src = imgUrl;
+            document.querySelectorAll('.thumb-img').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
         }
 
         function openOrderModal() {
@@ -794,6 +796,7 @@
             document.getElementById(modalId).style.display = 'none';
         }
 
+        // إرسال الطلبات وحفظها في قاعدة بيانات Firebase السحابية
         function handleOrderSubmit(event) {
             event.preventDefault();
             const product = products.find(p => p.id === activeProductId);
@@ -810,20 +813,22 @@
                 date: new Date().toLocaleString('ar-EG')
             };
 
-            let existingOrders = JSON.parse(localStorage.getItem('myStoreOrders')) || [];
-            existingOrders.push(newOrder);
-            localStorage.setItem('myStoreOrders', JSON.stringify(existingOrders));
-
-            document.getElementById('successMessageDetails').innerText = 
-                `شكراً لك ${newOrder.firstName} ${newOrder.lastName}. تم تسجيل طلبك (#${newOrder.id}) بنجاح. سنتصل بك قريباً على ${newOrder.phone}.`;
-            
-            closeModal('orderModal');
-            document.getElementById('successModal').style.display = 'flex';
-            event.target.reset();
+            database.ref('orders/' + newOrder.id).set(newOrder, (error) => {
+                if (error) {
+                    alert("حدث خطأ أثناء إرسال الطلب، تأكد من ضبط قواعد Firebase Rules!");
+                } else {
+                    document.getElementById('successMessageDetails').innerText = 
+                        `شكراً لك ${newOrder.firstName} ${newOrder.lastName}. تم تسجيل طلبك (#${newOrder.id}) بنجاح.`;
+                    
+                    closeModal('orderModal');
+                    document.getElementById('successModal').style.display = 'flex';
+                    event.target.reset();
+                }
+            });
         }
 
         function openAdminPanel() {
-            const pass = prompt("يرجى إدخال كلمة سر الأدمن لرؤية الطلبات:");
+            const pass = prompt("يرجى إدخال كلمة سر الأدمن:");
             if (pass === ADMIN_PASSWORD) {
                 renderAdminOrders();
                 document.getElementById('adminModal').style.display = 'flex';
@@ -832,100 +837,121 @@
             }
         }
 
-        function renderAdminOrders() {
-            const container = document.getElementById('adminOrdersContainer');
-            const orders = JSON.parse(localStorage.getItem('myStoreOrders')) || [];
+        function switchAdminTab(tabName, evt) {
+            document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
+            evt.currentTarget.classList.add('active');
 
-            if (orders.length === 0) {
-                container.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 2rem;">لا توجد أي طلبات حالياً.</p>';
+            if (tabName === 'add-product') {
+                document.getElementById('adminAddProductSection').style.display = 'block';
+                document.getElementById('adminOrdersSection').style.display = 'none';
+            } else {
+                document.getElementById('adminAddProductSection').style.display = 'none';
+                document.getElementById('adminOrdersSection').style.display = 'block';
+            }
+        }
+
+        function readFileAsDataURL(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function handleAddNewProduct(event) {
+            event.preventDefault();
+
+            const title = document.getElementById('newProdTitle').value;
+            const price = document.getElementById('newProdPrice').value;
+            const categorySelect = document.getElementById('newProdCategory');
+            const category = categorySelect.value;
+            const categoryName = categorySelect.options[categorySelect.selectedIndex].text;
+            const desc = document.getElementById('newProdDesc').value;
+            
+            const fileInput = document.getElementById('newProdFiles');
+            const files = Array.from(fileInput.files);
+
+            if (files.length === 0) {
+                alert("يرجى اختيار صورة واحدة على الأقل.");
                 return;
             }
 
-            container.innerHTML = '';
-            orders.reverse().forEach((order) => {
-                container.innerHTML += `
-                    <div class="order-card">
-                        <div class="order-card-header">
-                            <span>طلب رقم #${order.id} - ${order.date}</span>
-                            <button class="delete-order-btn" onclick="deleteSingleOrder(${order.id})"><i class="fa-solid fa-xmark"></i> حذف الطلب</button>
+            try {
+                const imagesList = await Promise.all(files.map(file => readFileAsDataURL(file)));
+                const mainImg = imagesList[0];
+
+                const newProduct = {
+                    id: Date.now(),
+                    title: title,
+                    category: category,
+                    categoryName: categoryName,
+                    price: price,
+                    rating: 5,
+                    image: mainImg,
+                    images: imagesList,
+                    description: desc
+                };
+
+                products.unshift(newProduct);
+                localStorage.setItem('myStoreProducts', JSON.stringify(products));
+
+                displayProducts(products);
+                alert('تم إضافة المنتج بنجاح!');
+                event.target.reset();
+                closeModal('adminModal');
+
+            } catch (err) {
+                alert("حدث خطأ أثناء تحميل الصور، يرجى المحاولة مرة أخرى.");
+            }
+        }
+
+        // جلب الطلبات من قاعدة البيانات السحابية وعرضها في لوحة الأدمن
+        function renderAdminOrders() {
+            const container = document.getElementById('adminOrdersContainer');
+            container.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 1rem;">جاري تحميل الطلبات من السحابة...</p>';
+
+            database.ref('orders').once('value', (snapshot) => {
+                const data = snapshot.val();
+                if (!data) {
+                    container.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 2rem;">لا توجد أي طلبات حالياً.</p>';
+                    return;
+                }
+
+                container.innerHTML = '';
+                const orders = Object.values(data);
+                orders.reverse().forEach((order) => {
+                    container.innerHTML += `
+                        <div class="order-card">
+                            <div class="order-card-header">
+                                <span>طلب رقم #${order.id} - ${order.date}</span>
+                                <button class="delete-order-btn" onclick="deleteSingleOrder(${order.id})"><i class="fa-solid fa-xmark"></i> حذف الطلب</button>
+                            </div>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.5rem; font-size: 0.95rem;">
+                                <div><strong>المنتج:</strong> ${order.productTitle} (${order.price})</div>
+                                <div><strong>الاسم الكامل:</strong> ${order.firstName} ${order.lastName}</div>
+                                <div><strong>رقم الهاتف:</strong> <a href="tel:${order.phone}" style="color: var(--success-color);">${order.phone}</a></div>
+                                <div><strong>العنوان:</strong> ${order.address}</div>
+                            </div>
+                            <div style="font-size: 0.85rem; color: var(--text-muted); border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 0.3rem;">
+                                <strong>الملاحظات:</strong> ${order.notes}
+                            </div>
                         </div>
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.5rem; font-size: 0.95rem;">
-                            <div><strong>المنتج:</strong> ${order.productTitle} (${order.price})</div>
-                            <div><strong>الاسم الكامل:</strong> ${order.firstName} ${order.lastName}</div>
-                            <div><strong>رقم الهاتف:</strong> <a href="tel:${order.phone}" style="color: var(--success-color);">${order.phone}</a></div>
-                            <div><strong>العنوان:</strong> ${order.address}</div>
-                        </div>
-                        <div style="font-size: 0.85rem; color: var(--text-muted); border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 0.3rem;">
-                            <strong>الملاحظات:</strong> ${order.notes}
-                        </div>
-                    </div>
-                `;
+                    `;
+                });
             });
         }
 
         function deleteSingleOrder(orderId) {
-            let orders = JSON.parse(localStorage.getItem('myStoreOrders')) || [];
-            orders = orders.filter(o => o.id !== orderId);
-            localStorage.setItem('myStoreOrders', JSON.stringify(orders));
-            renderAdminOrders();
+            if (confirm("هل أنت تأكد من حذف هذا الطلب من السحابة؟")) {
+                database.ref('orders/' + orderId).remove().then(() => renderAdminOrders());
+            }
         }
 
         function clearAllOrders() {
-            if (confirm("هل أنت تأكد من مسح جميع الطلبات؟")) {
-                localStorage.removeItem('myStoreOrders');
-                renderAdminOrders();
+            if (confirm("هل أنت تأكد من مسح جميع الطلبات من السحابة؟")) {
+                database.ref('orders').remove().then(() => renderAdminOrders());
             }
-        }
-
-        const stars = document.querySelectorAll('#starInput i');
-        stars.forEach(star => {
-            star.addEventListener('click', (e) => {
-                selectedStars = parseInt(e.target.getAttribute('data-value'));
-                stars.forEach((s, idx) => {
-                    if(idx < selectedStars) s.classList.add('active');
-                    else s.classList.remove('active');
-                });
-            });
-        });
-        stars.forEach(s => s.classList.add('active'));
-
-        function submitComment() {
-            const name = document.getElementById('commentUser').value.trim();
-            const text = document.getElementById('commentText').value.trim();
-
-            if(!name || !text) {
-                alert('يرجى كتابة الاسم والتعليق أولاً!');
-                return;
-            }
-
-            const product = products.find(p => p.id === activeProductId);
-            product.comments.push({ name: name, stars: selectedStars, text: text });
-
-            renderComments(product.comments);
-            document.getElementById('commentUser').value = '';
-            document.getElementById('commentText').value = '';
-        }
-
-        function renderComments(commentsList) {
-            const listContainer = document.getElementById('commentsList');
-            listContainer.innerHTML = '';
-            
-            if(commentsList.length === 0) {
-                listContainer.innerHTML = '<p style="color: var(--text-muted); font-size: 0.85rem;">لا توجد تعليقات بعد.</p>';
-                return;
-            }
-
-            commentsList.forEach(c => {
-                listContainer.innerHTML += `
-                    <div class="comment-item">
-                        <div class="comment-author">
-                            <span>${c.name}</span>
-                            <span style="color: var(--gold);">${'★'.repeat(c.stars)}</span>
-                        </div>
-                        <p style="margin-top: 5px; font-size: 0.9rem; color: #cbd5e1;">${c.text}</p>
-                    </div>
-                `;
-            });
         }
 
         displayProducts(products);
