@@ -15,6 +15,7 @@
             --accent-hover: #4f46e5;
             --success-color: #10b981;
             --danger-color: #ef4444;
+            --warning-color: #f59e0b;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --gold: #fbbf24;
@@ -344,47 +345,17 @@
             font-size: 0.85rem;
         }
 
-        /* تحسين العرض على الهواتف */
         @media (max-width: 600px) {
-            header {
-                padding: 0.8rem;
-            }
-            .filter-bar {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .filter-group {
-                width: 100%;
-            }
-            .products-grid {
-                grid-template-columns: 1fr;
-            }
-            .product-card {
-                flex-direction: row;
-                height: 130px;
-                align-items: center;
-            }
-            .product-img {
-                width: 110px;
-                height: 100%;
-                flex-shrink: 0;
-            }
-            .product-badge-wilaya {
-                top: 5px;
-                right: 5px;
-                font-size: 0.65rem;
-                padding: 0.2rem 0.4rem;
-            }
-            .product-info {
-                padding: 0.6rem;
-                justify-content: space-between;
-            }
-            .product-title {
-                font-size: 0.95rem;
-            }
-            .product-price {
-                font-size: 1rem;
-            }
+            header { padding: 0.8rem; }
+            .filter-bar { flex-direction: column; align-items: stretch; }
+            .filter-group { width: 100%; }
+            .products-grid { grid-template-columns: 1fr; }
+            .product-card { flex-direction: row; height: 130px; align-items: center; }
+            .product-img { width: 110px; height: 100%; flex-shrink: 0; }
+            .product-badge-wilaya { top: 5px; right: 5px; font-size: 0.65rem; padding: 0.2rem 0.4rem; }
+            .product-info { padding: 0.6rem; justify-content: space-between; }
+            .product-title { font-size: 0.95rem; }
+            .product-price { font-size: 1rem; }
         }
 
         .modal-overlay {
@@ -441,9 +412,7 @@
         }
 
         @media(min-width: 650px) {
-            .gallery-container {
-                width: 280px;
-            }
+            .gallery-container { width: 280px; }
         }
 
         .modal-img {
@@ -552,9 +521,7 @@
         }
 
         @media(min-width: 600px) {
-            .form-row {
-                grid-template-columns: 1fr 1fr;
-            }
+            .form-row { grid-template-columns: 1fr 1fr; }
         }
 
         .admin-tabs {
@@ -597,7 +564,7 @@
             padding: 1rem;
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 0.6rem;
         }
 
         .order-card-header {
@@ -609,6 +576,48 @@
             font-weight: 700;
             color: var(--accent-color);
             font-size: 0.9rem;
+        }
+
+        .admin-actions-btns {
+            display: flex;
+            gap: 8px;
+            margin-top: 5px;
+        }
+
+        .btn-approve {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success-color);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 700;
+            flex: 1;
+            transition: 0.2s;
+        }
+
+        .btn-approve:hover {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .btn-reject {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger-color);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 700;
+            flex: 1;
+            transition: 0.2s;
+        }
+
+        .btn-reject:hover {
+            background: var(--danger-color);
+            color: white;
         }
 
         .delete-order-btn {
@@ -637,14 +646,8 @@
             color: white;
         }
 
-        .footer-banner h2 {
-            font-size: 1.2rem;
-        }
-
-        .footer-banner p {
-            font-size: 0.9rem;
-            margin-top: 5px;
-        }
+        .footer-banner h2 { font-size: 1.2rem; }
+        .footer-banner p { font-size: 0.9rem; margin-top: 5px; }
     </style>
 </head>
 <body>
@@ -778,7 +781,7 @@
             <h2 style="margin-bottom: 0.5rem; color: var(--success-color); font-size: 1.2rem;">
                 <i class="fa-solid fa-store"></i> اعرض سلعتك للبيع (باطل 100%)
             </h2>
-            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">حط تصوير للمنتج تاعك وزيد السعر، وسيتم نشره مباشرة!</p>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">حط تصوير للمنتج تاعك وزيد السعر، وسيتم إرساله للأدمن للمراجعة والقبول!</p>
 
             <form class="order-form-container" onsubmit="handleUserSubmitProduct(event)">
                 <div class="form-section-title"><i class="fa-solid fa-user"></i> معلومات البائع</div>
@@ -904,7 +907,7 @@
                 </div>
 
                 <button type="submit" id="userSubmitBtn" class="btn-order-now" style="margin-top: 5px;">
-                    <i class="fa-solid fa-paper-plane"></i> نشر السلعة الآن (باطل)
+                    <i class="fa-solid fa-paper-plane"></i> إرسال السلعة للأدمن للمراجعة
                 </button>
             </form>
         </div>
@@ -978,18 +981,26 @@
 
     <!-- لوحة الأدمن -->
     <div class="modal-overlay" id="adminModal">
-        <div class="modal-content" style="max-width: 800px;">
+        <div class="modal-content" style="max-width: 850px;">
             <button class="close-btn" onclick="closeModal('adminModal')">&times;</button>
             <h2 style="margin-bottom: 1rem; font-size: 1.2rem;"><i class="fa-solid fa-user-shield" style="color: var(--danger-color);"></i> لوحة التحكم (الأدمن)</h2>
 
             <div class="admin-tabs">
-                <button class="admin-tab-btn active" onclick="switchAdminTab('products', event)"><i class="fa-solid fa-boxes-stacked"></i> السلع المعروضة</button>
+                <button class="admin-tab-btn active" onclick="switchAdminTab('pending', event)"><i class="fa-solid fa-clock"></i> المنتجات بانتظار الموافقة</button>
+                <button class="admin-tab-btn" onclick="switchAdminTab('products', event)"><i class="fa-solid fa-boxes-stacked"></i> السلع المنشورة حالياً</button>
                 <button class="admin-tab-btn" onclick="switchAdminTab('orders', event)"><i class="fa-solid fa-list-check"></i> طلبات الشراء</button>
             </div>
 
-            <div id="adminProductsSection">
+            <div id="adminPendingSection">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                    <h3 style="font-size: 1rem;">إدارة السلع</h3>
+                    <h3 style="font-size: 1rem;">المنتجات المقترحة من الزبائن</h3>
+                </div>
+                <div class="orders-list" id="adminPendingContainer"></div>
+            </div>
+
+            <div id="adminProductsSection" style="display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h3 style="font-size: 1rem;">السلع المنشورة في المتجر</h3>
                     <button class="delete-order-btn" onclick="clearAllProducts()"><i class="fa-solid fa-trash"></i> مسح الكل</button>
                 </div>
                 <div class="orders-list" id="adminProductsContainer"></div>
@@ -1014,11 +1025,11 @@
     </footer>
 
     <script>
-        const ADMIN_PASSWORD = "arobaz arobaz zero zero two";
+        const ADMIN_PASSWORD = "@@002";
         let allProducts = [];
+        let pendingProducts = [];
         let activeProductId = null;
 
-        // تحميل البيانات عند فتح الصفحة
         document.addEventListener('DOMContentLoaded', () => {
             loadProductsFromStorage();
         });
@@ -1028,7 +1039,6 @@
             if (saved) {
                 allProducts = JSON.parse(saved);
             } else {
-                // منتجات تجريبية افتراضية أولية
                 allProducts = [
                     {
                         id: 1,
@@ -1044,11 +1054,21 @@
                 ];
                 saveProductsToStorage();
             }
+
+            const savedPending = localStorage.getItem('dz_store_pending');
+            if (savedPending) {
+                pendingProducts = JSON.parse(savedPending);
+            }
+
             applyFilters();
         }
 
         function saveProductsToStorage() {
             localStorage.setItem('dz_store_products', JSON.stringify(allProducts));
+        }
+
+        function savePendingToStorage() {
+            localStorage.setItem('dz_store_pending', JSON.stringify(pendingProducts));
         }
 
         function applyFilters() {
@@ -1166,7 +1186,7 @@
             event.preventDefault();
             const btn = document.getElementById('userSubmitBtn');
             btn.disabled = true;
-            btn.innerText = "جاري النشر...";
+            btn.innerText = "جاري الإرسال...";
 
             const name = document.getElementById('sellerName').value;
             const phone = document.getElementById('sellerPhone').value;
@@ -1188,7 +1208,7 @@
             if (!file) {
                 alert("يرجى اختيار صورة للمنتج.");
                 btn.disabled = false;
-                btn.innerText = "نشر السلعة الآن (باطل)";
+                btn.innerText = "إرسال السلعة للأدمن للمراجعة";
                 return;
             }
 
@@ -1207,16 +1227,15 @@
                     seller: { name, phone, wilaya, city }
                 };
 
-                allProducts.unshift(newProduct);
-                saveProductsToStorage();
-                applyFilters();
+                pendingProducts.unshift(newProduct);
+                savePendingToStorage();
 
                 btn.disabled = false;
-                btn.innerText = "نشر السلعة الآن (باطل)";
+                btn.innerText = "إرسال السلعة للأدمن للمراجعة";
                 event.target.reset();
                 closeModal('sellModal');
 
-                document.getElementById('successMessageDetails').innerText = `تم نشر سلعتك (${title}) بنجاح وبدون أي تكلفة! أصبحت ظاهرة الآن للجميع.`;
+                document.getElementById('successMessageDetails').innerText = `تم إرسال سلعتك (${title}) للأدمن بنجاح! ستظهر في المتجر فور الموافقة عليها.`;
                 document.getElementById('successModal').style.display = 'flex';
             };
             reader.readAsDataURL(file);
@@ -1249,6 +1268,7 @@
         function openAdminPanel() {
             const pass = prompt("أدخل كلمة سر الأدمن:");
             if (pass === ADMIN_PASSWORD) {
+                renderAdminPending();
                 renderAdminProducts();
                 renderAdminOrders();
                 document.getElementById('adminModal').style.display = 'flex';
@@ -1261,14 +1281,68 @@
             document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
             evt.currentTarget.classList.add('active');
 
+            document.getElementById('adminPendingSection').style.display = tabName === 'pending' ? 'block' : 'none';
             document.getElementById('adminProductsSection').style.display = tabName === 'products' ? 'block' : 'none';
             document.getElementById('adminOrdersSection').style.display = tabName === 'orders' ? 'block' : 'none';
+        }
+
+        function renderAdminPending() {
+            const container = document.getElementById('adminPendingContainer');
+            if (pendingProducts.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-muted); text-align: center;">لا توجد منتجات بانتظار الموافقة.</p>';
+                return;
+            }
+            container.innerHTML = '';
+            pendingProducts.forEach(p => {
+                const s = p.seller || {};
+                container.innerHTML += `
+                    <div class="order-card">
+                        <div class="order-card-header">
+                            <span>#${p.id} - ${p.title}</span>
+                            <span style="color: var(--warning-color); font-size: 0.8rem;">قيد الانتظار</span>
+                        </div>
+                        <div style="font-size: 0.85rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 3px;">
+                            <div>السعر: <strong>${p.price}</strong> | القسم: ${p.categoryName}</div>
+                            <div>البائع: ${s.name || ''} (${s.phone || ''}) - الولاية: ${s.wilaya || ''}</div>
+                        </div>
+                        <div class="admin-actions-btns">
+                            <button class="btn-approve" onclick="approveProduct(${p.id})"><i class="fa-solid fa-check"></i> قبول ونشر</button>
+                            <button class="btn-reject" onclick="rejectPendingProduct(${p.id})"><i class="fa-solid fa-xmark"></i> رفض وحذف</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function approveProduct(id) {
+            const productIndex = pendingProducts.findIndex(p => p.id === id);
+            if (productIndex !== -1) {
+                const product = pendingProducts[productIndex];
+                pendingProducts.splice(productIndex, 1);
+                allProducts.unshift(product);
+
+                savePendingToStorage();
+                saveProductsToStorage();
+
+                renderAdminPending();
+                renderAdminProducts();
+                applyFilters();
+                alert("تم قبول المنتج ونشره في المتجر بنجاح!");
+            }
+        }
+
+        function rejectPendingProduct(id) {
+            if (confirm("هل تريد حقاً رفض وحذف هذا المنتج؟")) {
+                pendingProducts = pendingProducts.filter(p => p.id !== id);
+                savePendingToStorage();
+                renderAdminPending();
+            }
         }
 
         function renderAdminProducts() {
             const container = document.getElementById('adminProductsContainer');
             if (allProducts.length === 0) {
-                container.innerHTML = '<p style="color: var(--text-muted); text-align: center;">لا توجد سلع.</p>';
+                container.innerHTML = '<p style="color: var(--text-muted); text-align: center;">لا توجد سلع منشورة.</p>';
                 return;
             }
             container.innerHTML = '';
@@ -1289,7 +1363,7 @@
         }
 
         function deleteProduct(id) {
-            if (confirm("هل تريد حذف هذا المنتج؟")) {
+            if (confirm("هل تريد حذف هذا المنتج من المتجر؟")) {
                 allProducts = allProducts.filter(p => p.id !== id);
                 saveProductsToStorage();
                 renderAdminProducts();
@@ -1298,7 +1372,7 @@
         }
 
         function clearAllProducts() {
-            if (confirm("حذف كل المنتجات؟")) {
+            if (confirm("حذف كل المنتجات المنشورة؟")) {
                 allProducts = [];
                 saveProductsToStorage();
                 renderAdminProducts();
