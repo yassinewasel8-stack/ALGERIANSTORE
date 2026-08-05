@@ -15,7 +15,6 @@
             --accent-hover: #4f46e5;
             --success-color: #10b981;
             --danger-color: #ef4444;
-            --whatsapp-color: #25D366;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --gold: #fbbf24;
@@ -127,8 +126,66 @@
             color: white;
         }
 
+        /* شريط التصفية والفلترة المتقدم */
+        .filter-bar {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            padding: 0.4rem 0.8rem;
+            border-radius: 10px;
+        }
+
+        .filter-group i {
+            color: var(--accent-color);
+        }
+
+        .filter-group select {
+            background: transparent;
+            border: none;
+            color: white;
+            outline: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .filter-group select option {
+            background: #1e293b;
+            color: white;
+        }
+
+        .reset-filter-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-muted);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: 0.3s;
+        }
+
+        .reset-filter-btn:hover {
+            background: var(--danger-color);
+            color: white;
+        }
+
         .categories-container {
-            padding: 1.5rem 2rem 0.5rem 2rem;
+            padding: 1.2rem 2rem 0.5rem 2rem;
             display: flex;
             gap: 10px;
             overflow-x: auto;
@@ -183,12 +240,34 @@
             display: flex;
             flex-direction: column;
             width: 100%;
+            position: relative;
         }
 
         .product-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(0,0,0,0.4);
             border-color: rgba(99, 102, 241, 0.5);
+        }
+
+        .product-badge-wilaya {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(5px);
+            border: 1px solid var(--border-color);
+            color: white;
+            padding: 0.3rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .product-badge-wilaya i {
+            color: var(--accent-color);
         }
 
         .product-img {
@@ -253,6 +332,8 @@
         @media (max-width: 768px) {
             header { flex-direction: column; }
             .container { padding: 1rem; }
+            .filter-bar { flex-direction: column; align-items: stretch; }
+            .filter-group { justify-content: space-between; }
             
             .products-grid {
                 display: flex;
@@ -262,7 +343,7 @@
 
             .product-card {
                 flex-direction: row;
-                height: 130px;
+                height: 140px;
                 align-items: center;
             }
 
@@ -277,13 +358,8 @@
                 justify-content: space-between;
             }
 
-            .product-title {
-                font-size: 1rem;
-            }
-
-            .product-price {
-                font-size: 1rem;
-            }
+            .product-title { font-size: 1rem; }
+            .product-price { font-size: 1rem; }
         }
 
         .modal-overlay {
@@ -579,28 +655,6 @@
             color: white;
         }
 
-        .whatsapp-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: var(--whatsapp-color);
-            color: white;
-            padding: 0.8rem 1.6rem;
-            border-radius: 30px;
-            font-weight: 800;
-            font-size: 1.05rem;
-            text-decoration: none;
-            margin-top: 12px;
-            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .whatsapp-link:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 18px rgba(37, 211, 102, 0.5);
-            background: #20ba5a;
-        }
-
         @media(max-width: 600px) {
             .modal-header-flex { flex-direction: column; }
             .gallery-container { width: 100%; }
@@ -617,7 +671,7 @@
         <div class="header-actions">
             <div class="search-box">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="searchInput" placeholder="ابحث عن منتج..." onkeyup="filterProducts()">
+                <input type="text" id="searchInput" placeholder="ابحث عن منتج..." onkeyup="applyFilters()">
             </div>
             
             <button class="sell-btn" onclick="openSellModal()">
@@ -630,31 +684,131 @@
         </div>
     </header>
 
+    <!-- شريط التصفية والفلترة المتقدم -->
+    <div class="filter-bar">
+        <div class="filter-group">
+            <i class="fa-solid fa-location-dot"></i>
+            <select id="filterWilaya" onchange="applyFilters()">
+                <option value="all">كل الولايات (الكل)</option>
+                <option value="01 - أدرار">01 - أدرار</option>
+                <option value="02 - الشلف">02 - الشلف</option>
+                <option value="03 - الأغواط">03 - الأغواط</option>
+                <option value="04 - أم البواقي">04 - أم البواقي</option>
+                <option value="05 - باتنة">05 - باتنة</option>
+                <option value="06 - بجاية">06 - بجاية</option>
+                <option value="07 - بسكرة">07 - بسكرة</option>
+                <option value="08 - بشار">08 - بشار</option>
+                <option value="09 - البليدة">09 - البليدة</option>
+                <option value="10 - البويرة">10 - البويرة</option>
+                <option value="11 - تمنراست">11 - تمنراست</option>
+                <option value="12 - تبسة">12 - تبسة</option>
+                <option value="13 - تلمسان">13 - تلمسان</option>
+                <option value="14 - تيارت">14 - تيارت</option>
+                <option value="15 - تيزي وزو">15 - تيزي وزو</option>
+                <option value="16 - الجزائر العاصمة">16 - الجزائر العاصمة</option>
+                <option value="17 - الجلفة">17 - الجلفة</option>
+                <option value="18 - جيجل">18 - جيجل</option>
+                <option value="19 - سطيف">19 - سطيف</option>
+                <option value="20 - سعيدة">20 - سعيدة</option>
+                <option value="21 - سكيكدة">21 - سكيكدة</option>
+                <option value="22 - سيدي بلعباس">22 - سيدي بلعباس</option>
+                <option value="23 - عنابة">23 - عنابة</option>
+                <option value="24 - قالمة">24 - قالمة</option>
+                <option value="25 - قسنطينة">25 - قسنطينة</option>
+                <option value="26 - المدية">26 - المدية</option>
+                <option value="27 - مستغانم">27 - مستغانم</option>
+                <option value="28 - المسيلة">28 - المسيلة</option>
+                <option value="29 - معسكر">29 - معسكر</option>
+                <option value="30 - ورقلة">30 - ورقلة</option>
+                <option value="31 - وهران">31 - وهران</option>
+                <option value="32 - البيض">32 - البيض</option>
+                <option value="33 - إليزي">33 - إليزي</option>
+                <option value="34 - برج بوعريريج">34 - برج بوعريريج</option>
+                <option value="35 - بومرداس">35 - بومرداس</option>
+                <option value="36 - الطارف">36 - الطارف</option>
+                <option value="37 - تندوف">37 - تندوف</option>
+                <option value="38 - تيسمسيلت">38 - تيسمسيلت</option>
+                <option value="39 - الوادي">39 - الوادي</option>
+                <option value="40 - خنشلة">40 - خنشلة</option>
+                <option value="41 - سوق أهراس">41 - سوق أهراس</option>
+                <option value="42 - تيبازة">42 - تيبازة</option>
+                <option value="43 - ميلة">43 - ميلة</option>
+                <option value="44 - عين الدفلى">44 - عين الدفلى</option>
+                <option value="45 - النعامة">45 - النعامة</option>
+                <option value="46 - عين تموشنت">46 - عين تموشنت</option>
+                <option value="47 - غرداية">47 - غرداية</option>
+                <option value="48 - غليزان">48 - غليزان</option>
+                <option value="49 - تيميمون">49 - تيميمون</option>
+                <option value="50 - برج باجي مختار">50 - برج باجي مختار</option>
+                <option value="51 - أولاد جلال">51 - أولاد جلال</option>
+                <option value="52 - بني عباس">52 - بني عباس</option>
+                <option value="53 - عين صالح">53 - عين صالح</option>
+                <option value="54 - عين قزام">54 - عين قزام</option>
+                <option value="55 - تقرت">55 - تقرت</option>
+                <option value="56 - جانت">56 - جانت</option>
+                <option value="57 - المغير">57 - المغير</option>
+                <option value="58 - المنيعة">58 - المنيعة</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <i class="fa-solid fa-layer-group"></i>
+            <select id="filterCategoryDropdown" onchange="applyFilters()">
+                <option value="all">جميع الأقسام</option>
+                <option value="electronics">إلكترونيات وتكنولوجيا</option>
+                <option value="fashion">الموضة والأزياء</option>
+                <option value="home">المنزل والديكور</option>
+                <option value="beauty">الصحة والجمال</option>
+                <option value="sports">الرياضة واللياقة</option>
+                <option value="baby">مستلزمات الأطفال</option>
+                <option value="auto">مستلزمات السيارات</option>
+                <option value="books">كتب ومكتبة</option>
+                <option value="toys">ألعاب وهوايات</option>
+                <option value="pets">الحيوانات الأليفة</option>
+                <option value="courses">دورات وكورسات</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <i class="fa-solid fa-arrow-down-short-wide"></i>
+            <select id="filterPriceSort" onchange="applyFilters()">
+                <option value="default">الترتيب حسب الأحدث</option>
+                <option value="low-to-high">السعر: من الأقل للأعلى</option>
+                <option value="high-to-low">السعر: من الأعلى للأقل</option>
+            </select>
+        </div>
+
+        <button class="reset-filter-btn" onclick="resetAllFilters()">
+            <i class="fa-solid fa-rotate-right"></i> إعادة ضبط
+        </button>
+    </div>
+
+    <!-- شريط الأقسام السريع -->
     <div class="categories-container">
-        <button class="cat-btn active" onclick="filterCategory('all', event)"><i class="fa-solid fa-border-all"></i> الكل</button>
-        <button class="cat-btn" onclick="filterCategory('electronics', event)"><i class="fa-solid fa-laptop"></i> إلكترونيات</button>
-        <button class="cat-btn" onclick="filterCategory('clothing', event)"><i class="fa-solid fa-shirt"></i> ملابس وأزياء</button>
-        <button class="cat-btn" onclick="filterCategory('books', event)"><i class="fa-solid fa-book"></i> كتب ومجلات</button>
-        <button class="cat-btn" onclick="filterCategory('courses', event)"><i class="fa-solid fa-graduation-cap"></i> كورسات وتدريب</button>
-        <button class="cat-btn" onclick="filterCategory('games', event)"><i class="fa-solid fa-gamepad"></i> ألعاب وتسلية</button>
-        <button class="cat-btn" onclick="filterCategory('auto', event)"><i class="fa-solid fa-car"></i> سيارات وقطع غيار</button>
-        <button class="cat-btn" onclick="filterCategory('movies', event)"><i class="fa-solid fa-film"></i> أفلام وترفيه</button>
+        <button class="cat-btn active" onclick="selectCategory('all', event)"><i class="fa-solid fa-border-all"></i> الكل</button>
+        <button class="cat-btn" onclick="selectCategory('electronics', event)"><i class="fa-solid fa-laptop"></i> إلكترونيات</button>
+        <button class="cat-btn" onclick="selectCategory('fashion', event)"><i class="fa-solid fa-shirt"></i> موضة وأزياء</button>
+        <button class="cat-btn" onclick="selectCategory('home', event)"><i class="fa-solid fa-house"></i> منزل وديكور</button>
+        <button class="cat-btn" onclick="selectCategory('beauty', event)"><i class="fa-solid fa-pump-soap"></i> صحة وجمال</button>
+        <button class="cat-btn" onclick="selectCategory('sports', event)"><i class="fa-solid fa-dumbbell"></i> رياضة</button>
+        <button class="cat-btn" onclick="selectCategory('auto', event)"><i class="fa-solid fa-car"></i> سيارات</button>
+        <button class="cat-btn" onclick="selectCategory('pets', event)"><i class="fa-solid fa-dog"></i> حيوانات أليفة</button>
     </div>
 
     <div class="container">
         <div class="products-grid" id="productsGrid">
-            <p style="color: var(--text-muted); padding: 1rem;">جاري تحميل المنتجات المقبولة من السحابة...</p>
+            <p style="color: var(--text-muted); padding: 1rem;">جاري تحميل المنتجات...</p>
         </div>
     </div>
 
-    <!-- نافذة عرض المنتج للبيع (للعميل / البائع) -->
+    <!-- نافذة عرض المنتج للبيع -->
     <div class="modal-overlay" id="sellModal">
         <div class="modal-content" style="max-width: 600px;">
             <button class="close-btn" onclick="closeModal('sellModal')">&times;</button>
             <h2 style="margin-bottom: 0.5rem; color: var(--success-color);">
                 <i class="fa-solid fa-tags"></i> اعرض منتجك للبيع
             </h2>
-            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">أدخل بياناتك ومعلومات المنتج وسيتم مراجعته من الإدارة قبل نشره.</p>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">أدخل بياناتك وسيتم مراجعة منتجك من الإدارة قبل النشر.</p>
 
             <form class="order-form-container" onsubmit="handleUserSubmitProduct(event)">
                 <div class="form-section-title"><i class="fa-solid fa-user"></i> المعلومات الشخصية للبائع</div>
@@ -665,7 +819,7 @@
                     </div>
                     <div class="form-group">
                         <label>اللقب *</label>
-                        <input type="text" id="sellerLastName" required placeholder="مثال: يونس">
+                        <input type="text" id="sellerLastName" required placeholder="مثال: محمد">
                     </div>
                 </div>
 
@@ -675,37 +829,106 @@
                         <input type="tel" id="sellerPhone" required placeholder="07XXXXXXXX">
                     </div>
                     <div class="form-group">
-                        <label>مكان الإقامة (الولاية والدائرة) *</label>
-                        <input type="text" id="sellerLocation" required placeholder="مثال: الشلف - أولاد فارس">
+                        <label>الولاية *</label>
+                        <select id="sellerWilaya" required>
+                            <option value="">اختر الولاية...</option>
+                            <option value="01 - أدرار">01 - أدرار</option>
+                            <option value="02 - الشلف">02 - الشلف</option>
+                            <option value="03 - الأغواط">03 - الأغواط</option>
+                            <option value="04 - أم البواقي">04 - أم البواقي</option>
+                            <option value="05 - باتنة">05 - باتنة</option>
+                            <option value="06 - بجاية">06 - بجاية</option>
+                            <option value="07 - بسكرة">07 - بسكرة</option>
+                            <option value="08 - بشار">08 - بشار</option>
+                            <option value="09 - البليدة">09 - البليدة</option>
+                            <option value="10 - البويرة">10 - البويرة</option>
+                            <option value="11 - تمنراست">11 - تمنراست</option>
+                            <option value="12 - تبسة">12 - تبسة</option>
+                            <option value="13 - تلمسان">13 - تلمسان</option>
+                            <option value="14 - تيارت">14 - تيارت</option>
+                            <option value="15 - تيزي وزو">15 - تيزي وزو</option>
+                            <option value="16 - الجزائر العاصمة">16 - الجزائر العاصمة</option>
+                            <option value="17 - الجلفة">17 - الجلفة</option>
+                            <option value="18 - جيجل">18 - جيجل</option>
+                            <option value="19 - سطيف">19 - سطيف</option>
+                            <option value="20 - سعيدة">20 - سعيدة</option>
+                            <option value="21 - سكيكدة">21 - سكيكدة</option>
+                            <option value="22 - سيدي بلعباس">22 - سيدي بلعباس</option>
+                            <option value="23 - عنابة">23 - عنابة</option>
+                            <option value="24 - قالمة">24 - قالمة</option>
+                            <option value="25 - قسنطينة">25 - قسنطينة</option>
+                            <option value="26 - المدية">26 - المدية</option>
+                            <option value="27 - مستغانم">27 - مستغانم</option>
+                            <option value="28 - المسيلة">28 - المسيلة</option>
+                            <option value="29 - معسكر">29 - معسكر</option>
+                            <option value="30 - ورقلة">30 - ورقلة</option>
+                            <option value="31 - وهران">31 - وهران</option>
+                            <option value="32 - البيض">32 - البيض</option>
+                            <option value="33 - إليزي">33 - إليزي</option>
+                            <option value="34 - برج بوعريريج">34 - برج بوعريريج</option>
+                            <option value="35 - بومرداس">35 - بومرداس</option>
+                            <option value="36 - الطارف">36 - الطارف</option>
+                            <option value="37 - تندوف">37 - تندوف</option>
+                            <option value="38 - تيسمسيلت">38 - تيسمسيلت</option>
+                            <option value="39 - الوادي">39 - الوادي</option>
+                            <option value="40 - خنشلة">40 - خنشلة</option>
+                            <option value="41 - سوق أهراس">41 - سوق أهراس</option>
+                            <option value="42 - تيبازة">42 - تيبازة</option>
+                            <option value="43 - ميلة">43 - ميلة</option>
+                            <option value="44 - عين الدفلى">44 - عين الدفلى</option>
+                            <option value="45 - النعامة">45 - النعامة</option>
+                            <option value="46 - عين تموشنت">46 - عين تموشنت</option>
+                            <option value="47 - غرداية">47 - غرداية</option>
+                            <option value="48 - غليزان">48 - غليزان</option>
+                            <option value="49 - تيميمون">49 - تيميمون</option>
+                            <option value="50 - برج باجي مختار">50 - برج باجي مختار</option>
+                            <option value="51 - أولاد جلال">51 - أولاد جلال</option>
+                            <option value="52 - بني عباس">52 - بني عباس</option>
+                            <option value="53 - عين صالح">53 - عين صالح</option>
+                            <option value="54 - عين قزام">54 - عين قزام</option>
+                            <option value="55 - تقرت">55 - تقرت</option>
+                            <option value="56 - جانت">56 - جانت</option>
+                            <option value="57 - المغير">57 - المغير</option>
+                            <option value="58 - المنيعة">58 - المنيعة</option>
+                        </select>
                     </div>
+                </div>
+
+                <div class="form-group">
+                    <label>الدائرة / البلدية (اكتبها يدوياً) *</label>
+                    <input type="text" id="sellerCity" required placeholder="مثال: الشلف، تنس، باب الزوار...">
                 </div>
 
                 <div class="form-section-title"><i class="fa-solid fa-box"></i> معلومات المنتج</div>
                 
                 <div class="form-group">
                     <label>اسم المنتج *</label>
-                    <input type="text" id="userProdTitle" required placeholder="مثال: هاتف آيفون 11 بروماكس">
+                    <input type="text" id="userProdTitle" required placeholder="اكتب اسم المنتج بوضوح...">
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label>سعر المنتج *</label>
                         <div class="price-input-wrapper">
-                            <input type="number" id="userProdPriceNum" required placeholder="مثال: 45000">
-                            <span class="price-currency">د.ج (دينار جزائري)</span>
+                            <input type="number" id="userProdPriceNum" required placeholder="مثال: 4500">
+                            <span class="price-currency">د.ج</span>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label>القسم *</label>
                         <select id="userProdCategory" required>
-                            <option value="electronics">إلكترونيات</option>
-                            <option value="clothing">ملابس وأزياء</option>
-                            <option value="books">كتب ومجلات</option>
-                            <option value="courses">كورسات وتدريب</option>
-                            <option value="games">ألعاب وتسلية</option>
-                            <option value="auto">سيارات وقطع غيار</option>
-                            <option value="movies">أفلام وترفيه</option>
+                            <option value="electronics">إلكترونيات وتكنولوجيا</option>
+                            <option value="fashion">الموضة والأزياء</option>
+                            <option value="home">المنزل والديكور</option>
+                            <option value="beauty">الصحة والجمال</option>
+                            <option value="sports">الرياضة واللياقة</option>
+                            <option value="baby">مستلزمات الأطفال</option>
+                            <option value="auto">مستلزمات السيارات</option>
+                            <option value="books">كتب ومكتبة</option>
+                            <option value="toys">ألعاب وهوايات</option>
+                            <option value="pets">الحيوانات الأليفة</option>
+                            <option value="courses">دورات وكورسات</option>
                         </select>
                     </div>
                 </div>
@@ -772,7 +995,7 @@
                     </div>
                     <div class="form-group">
                         <label>اللقب / العائلة *</label>
-                        <input type="text" id="custLastName" required placeholder="مثال: يونس">
+                        <input type="text" id="custLastName" required placeholder="مثال: محمد">
                     </div>
                 </div>
                 <div class="form-group">
@@ -780,8 +1003,8 @@
                     <input type="tel" id="custPhone" required placeholder="07XXXXXXXX">
                 </div>
                 <div class="form-group">
-                    <label>العنوان الكامل / الولاية *</label>
-                    <input type="text" id="custAddress" required placeholder="البلدية، الولاية">
+                    <label>العنوان الكامل (الولاية والبلدية) *</label>
+                    <input type="text" id="custAddress" required placeholder="مثال: وهران، حاسي مسعود">
                 </div>
                 <div class="form-group">
                     <label>ملاحظات إضافية (اختياري)</label>
@@ -808,28 +1031,24 @@
     <div class="modal-overlay" id="adminModal">
         <div class="modal-content" style="max-width: 850px;">
             <button class="close-btn" onclick="closeModal('adminModal')">&times;</button>
-            
             <h2 style="margin-bottom: 1rem;"><i class="fa-solid fa-user-shield" style="color: var(--danger-color);"></i> لوحة التحكم (الأدمن)</h2>
 
             <div class="admin-tabs">
-                <button class="admin-tab-btn active" onclick="switchAdminTab('pending-products', event)"><i class="fa-solid fa-clock"></i> طلبات العرض للمعاينة والموافقة</button>
-                <button class="admin-tab-btn" onclick="switchAdminTab('manage-products', event)"><i class="fa-solid fa-boxes-stacked"></i> المنتجات المنشورة والمقبولة</button>
+                <button class="admin-tab-btn active" onclick="switchAdminTab('pending-products', event)"><i class="fa-solid fa-clock"></i> طلبات المعاينة</button>
+                <button class="admin-tab-btn" onclick="switchAdminTab('manage-products', event)"><i class="fa-solid fa-boxes-stacked"></i> المنتجات المنشورة</button>
                 <button class="admin-tab-btn" onclick="switchAdminTab('orders', event)"><i class="fa-solid fa-list-check"></i> قائمة الطلبات</button>
             </div>
 
-            <!-- 1. قسم المنتجات المعلقة (للموافقة أو الرفض) -->
             <div id="adminPendingProductsSection">
                 <h3 style="margin-bottom: 1rem; color: var(--gold);">منتجات في انتظار موافقتك</h3>
                 <div class="orders-list" id="adminPendingProductsContainer"></div>
             </div>
 
-            <!-- 2. قسم المنتجات المقبولة حاليا -->
             <div id="adminManageProductsSection" style="display: none;">
                 <h3 style="margin-bottom: 1rem;">المنتجات المعروضة للجميع حالياً</h3>
                 <div class="orders-list" id="adminProductsContainer"></div>
             </div>
 
-            <!-- 3. قسم إدارة الطلبات -->
             <div id="adminOrdersSection" style="display: none;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
                     <h3>الطلبات المسجلة من الزبائن</h3>
@@ -842,11 +1061,8 @@
 
     <footer>
         <div class="footer-banner">
-            <h2><i class="fa-solid fa-bullhorn"></i> هل تريد عرض منتجاتك أو خدماتك معنا؟</h2>
-            <p style="margin-top: 5px;">عرض ووضع السلع على المتجر حالياً <strong>مجاني بشكل كامل!</strong></p>
-            <a href="https://wa.me/213783373607" target="_blank" class="whatsapp-link">
-                <i class="fa-brands fa-whatsapp" style="font-size: 1.4rem;"></i> تواصل معي عبر الواتساب: 0783373607
-            </a>
+            <h2><i class="fa-solid fa-bullhorn"></i> اعرض منتجاتك أو خدماتك معنا</h2>
+            <p style="margin-top: 5px;">يمكنك عرض ووضع السلع على المتجر مباشرة وسيتم مراجعتها ونشرها مجاناً!</p>
         </div>
         <p style="color: var(--text-muted); font-size: 0.85rem;">جميع الحقوق محفوظة &copy; 2026 - متجر الجزائر الإلكتروني</p>
     </footer>
@@ -882,15 +1098,67 @@
                 if (data) {
                     allProducts = Object.values(data);
                     allProducts.reverse();
-                    
-                    // التصفية: عرض المنتجات المقبولة فقط في المتجر الرئيسي
                     approvedProducts = allProducts.filter(p => p.status === 'approved');
                 } else {
                     allProducts = [];
                     approvedProducts = [];
                 }
-                displayProducts(approvedProducts);
+                applyFilters();
             });
+        }
+
+        function applyFilters() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const selectedWilaya = document.getElementById('filterWilaya').value;
+            const selectedCategory = document.getElementById('filterCategoryDropdown').value;
+            const sortPrice = document.getElementById('filterPriceSort').value;
+
+            let result = [...approvedProducts];
+
+            if (query) {
+                result = result.filter(p => p.title.toLowerCase().includes(query));
+            }
+
+            if (selectedWilaya !== 'all') {
+                result = result.filter(p => p.seller && p.seller.wilaya === selectedWilaya);
+            }
+
+            if (selectedCategory !== 'all') {
+                result = result.filter(p => p.category === selectedCategory);
+            }
+
+            if (sortPrice === 'low-to-high') {
+                result.sort((a, b) => extractPriceNum(a.price) - extractPriceNum(b.price));
+            } else if (sortPrice === 'high-to-low') {
+                result.sort((a, b) => extractPriceNum(b.price) - extractPriceNum(a.price));
+            }
+
+            displayProducts(result);
+        }
+
+        function extractPriceNum(priceStr) {
+            if(!priceStr) return 0;
+            return parseFloat(priceStr.replace(/[^0-9.]/g, '')) || 0;
+        }
+
+        function selectCategory(cat, evt) {
+            document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
+            if(evt) evt.currentTarget.classList.add('active');
+
+            document.getElementById('filterCategoryDropdown').value = cat;
+            applyFilters();
+        }
+
+        function resetAllFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('filterWilaya').value = 'all';
+            document.getElementById('filterCategoryDropdown').value = 'all';
+            document.getElementById('filterPriceSort').value = 'default';
+
+            document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector('.cat-btn').classList.add('active');
+
+            applyFilters();
         }
 
         function displayProducts(items) {
@@ -898,14 +1166,17 @@
             grid.innerHTML = '';
 
             if (items.length === 0) {
-                grid.innerHTML = '<p style="color: var(--text-muted); padding: 1.5rem; width: 100%;">لا توجد منتجات معروضة ومقبولة حالياً.</p>';
+                grid.innerHTML = '<p style="color: var(--text-muted); padding: 1.5rem; width: 100%;">لا توجد منتجات مطابقة لخيارات الفلترة الحالية.</p>';
                 return;
             }
             
             items.forEach(product => {
                 const starsHtml = '★'.repeat(product.rating || 5);
+                const wilayaText = product.seller && product.seller.wilaya ? product.seller.wilaya : 'غير محدودة';
+
                 grid.innerHTML += `
                     <div class="product-card" onclick="openProductModal(${product.id})">
+                        <div class="product-badge-wilaya"><i class="fa-solid fa-location-dot"></i> ${wilayaText}</div>
                         <img src="${product.image}" class="product-img" alt="${product.title}">
                         <div class="product-info">
                             <div>
@@ -921,19 +1192,6 @@
                     </div>
                 `;
             });
-        }
-
-        function filterCategory(cat, evt) {
-            document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
-            if(evt) evt.currentTarget.classList.add('active');
-
-            if(cat === 'all') displayProducts(approvedProducts);
-            else displayProducts(approvedProducts.filter(p => p.category === cat));
-        }
-
-        function filterProducts() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            displayProducts(approvedProducts.filter(p => p.title.toLowerCase().includes(query)));
         }
 
         function openSellModal() {
@@ -957,7 +1215,7 @@
             if (product.seller) {
                 sellerInfoDiv.innerHTML = `
                     <strong>معلومات البائع:</strong> ${product.seller.firstName} ${product.seller.lastName} | 
-                    <i class="fa-solid fa-location-dot"></i> ${product.seller.location} | 
+                    <i class="fa-solid fa-location-dot"></i> ${product.seller.wilaya} (${product.seller.city}) | 
                     <i class="fa-solid fa-phone"></i> ${product.seller.phone}
                 `;
                 sellerInfoDiv.style.display = 'block';
@@ -1014,7 +1272,8 @@
             const firstName = document.getElementById('sellerFirstName').value;
             const lastName = document.getElementById('sellerLastName').value;
             const phone = document.getElementById('sellerPhone').value;
-            const location = document.getElementById('sellerLocation').value;
+            const wilaya = document.getElementById('sellerWilaya').value;
+            const city = document.getElementById('sellerCity').value;
 
             const title = document.getElementById('userProdTitle').value;
             const priceNum = document.getElementById('userProdPriceNum').value;
@@ -1050,12 +1309,13 @@
                     image: mainImg,
                     images: imagesList,
                     description: desc,
-                    status: "pending", // الحالة الافتراضية: قيد انتظار موافقة الأدمن
+                    status: "pending",
                     seller: {
                         firstName: firstName,
                         lastName: lastName,
                         phone: phone,
-                        location: location
+                        wilaya: wilaya,
+                        city: city
                     }
                 };
 
@@ -1067,7 +1327,7 @@
                         alert("حدث خطأ أثناء الاتصال بالسحابة!");
                     } else {
                         document.getElementById('successMessageDetails').innerText = 
-                            `شكراً لك ${firstName}. تم إرسال منتجك (${title}) بنجاح، وسيتم نشره في المتجر فور مراجعته وقبوله من الإدارة.`;
+                            `شكراً لك ${firstName}. تم إرسال منتجك (${title}) بنجاح، وسيتم نشره فور مراجعته وقبوله.`;
                         
                         event.target.reset();
                         closeModal('sellModal');
@@ -1133,13 +1393,12 @@
             document.getElementById('adminOrdersSection').style.display = tabName === 'orders' ? 'block' : 'none';
         }
 
-        /* 1. عرض المنتجات التي تنتظر الموافقة */
         function renderAdminPendingProducts() {
             const container = document.getElementById('adminPendingProductsContainer');
             const pendingList = allProducts.filter(p => p.status === 'pending');
 
             if (pendingList.length === 0) {
-                container.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 1.5rem;">لا توجد أي طلبات منتجات معلقة تنتظر الموافقة.</p>';
+                container.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 1.5rem;">لا توجد طلبات منتجات معلقة.</p>';
                 return;
             }
 
@@ -1149,7 +1408,7 @@
                 container.innerHTML += `
                     <div class="order-card" style="border: 1px solid var(--gold);">
                         <div class="order-card-header" style="color: var(--gold);">
-                            <span>طلب نشر منتج جديد (قيد المعاينة)</span>
+                            <span>طلب نشر منتج جديد</span>
                             <div>
                                 <button class="approve-btn" onclick="approveProduct(${p.id})"><i class="fa-solid fa-check"></i> قبول ونشر</button>
                                 <button class="delete-order-btn" onclick="deleteSingleProduct(${p.id})"><i class="fa-solid fa-xmark"></i> رفض وحذف</button>
@@ -1157,9 +1416,9 @@
                         </div>
 
                         <div style="background: rgba(255,255,255,0.05); padding: 0.6rem; border-radius: 8px; font-size: 0.9rem; margin-bottom: 5px;">
-                            <strong>معلومات البائع:</strong> ${s.firstName || ''} ${s.lastName || ''} | 
-                            <strong>رقم الهاتف:</strong> <a href="tel:${s.phone}" style="color: var(--success-color);">${s.phone || ''}</a> | 
-                            <strong>الإقامة:</strong> ${s.location || ''}
+                            <strong>البائع:</strong> ${s.firstName || ''} ${s.lastName || ''} | 
+                            <strong>الهاتف:</strong> ${s.phone || ''} | 
+                            <strong>الموقع:</strong> ${s.wilaya || ''} - ${s.city || ''}
                         </div>
 
                         <div style="display: flex; gap: 12px; align-items: center;">
@@ -1175,37 +1434,33 @@
             });
         }
 
-        /* قبول المنتج ونشره */
         function approveProduct(prodId) {
-            database.ref('products/' + prodId).update({
-                status: 'approved'
-            }).then(() => {
-                alert("تمت الموافقة على المنتج ونشره بنجاح للجمهور!");
+            database.ref('products/' + prodId).update({ status: 'approved' }).then(() => {
+                alert("تمت الموافقة على المنتج ونشره!");
                 renderAdminPendingProducts();
                 renderAdminApprovedProducts();
             });
         }
 
-        /* 2. عرض المنتجات المقبولة حالياً */
         function renderAdminApprovedProducts() {
             const container = document.getElementById('adminProductsContainer');
             const list = allProducts.filter(p => p.status === 'approved');
 
             if (list.length === 0) {
-                container.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 1rem;">لا توجد منتجات منشورة حالياً.</p>';
+                container.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 1rem;">لا توجد منتجات منشورة.</p>';
                 return;
             }
 
             container.innerHTML = '';
             list.forEach(p => {
                 const s = p.seller || {};
-                const sellerText = p.seller ? `البائع: ${s.firstName} ${s.lastName} (${s.phone} - ${s.location})` : 'أضيف مباشرة من الأدمن';
+                const sellerText = p.seller ? `البائع: ${s.firstName} ${s.lastName} (${s.phone} - ${s.wilaya})` : 'أضيف مباشرة';
                 container.innerHTML += `
                     <div class="order-card">
                         <div class="order-card-header">
                             <span>منتج مقبول #${p.id}</span>
                             <div>
-                                <button class="edit-btn" onclick="editProductAdmin(${p.id})"><i class="fa-solid fa-pen"></i> تعديل السعر/الوصف</button>
+                                <button class="edit-btn" onclick="editProductAdmin(${p.id})"><i class="fa-solid fa-pen"></i> تعديل</button>
                                 <button class="delete-order-btn" onclick="deleteSingleProduct(${p.id})"><i class="fa-solid fa-trash"></i> حذف</button>
                             </div>
                         </div>
@@ -1215,7 +1470,6 @@
                                 <strong>${p.title}</strong>
                                 <div style="color: var(--success-color); font-weight: bold;">${p.price}</div>
                                 <div style="font-size: 0.8rem; color: var(--text-muted);">${sellerText}</div>
-                                <div style="font-size: 0.85rem; color: var(--text-main); margin-top: 3px;">الوصف: ${p.description}</div>
                             </div>
                         </div>
                     </div>
@@ -1225,9 +1479,9 @@
 
         function editProductAdmin(prodId) {
             const p = allProducts.find(item => item.id === prodId);
-            const newPrice = prompt("أدخل السعر الجديد (اكتب الرقم فقط، سيتم إضافة د.ج تلقائياً):", p.price.replace(' د.ج', ''));
+            const newPrice = prompt("أدخل السعر الجديد:", p.price.replace(' د.ج', ''));
             if (newPrice !== null && newPrice.trim() !== "") {
-                const newDesc = prompt("أدخل الوصف الجديد للمنتج:", p.description);
+                const newDesc = prompt("أدخل الوصف الجديد:", p.description);
                 if (newDesc !== null) {
                     database.ref('products/' + prodId).update({
                         price: `${newPrice.trim()} د.ج`,
@@ -1241,7 +1495,7 @@
         }
 
         function deleteSingleProduct(prodId) {
-            if (confirm("هل أنت تأكد من حذف/رفض هذا المنتج نهائياً؟")) {
+            if (confirm("هل أنت تأكد من حذف هذا المنتج؟")) {
                 database.ref('products/' + prodId).remove().then(() => {
                     renderAdminPendingProducts();
                     renderAdminApprovedProducts();
@@ -1249,15 +1503,12 @@
             }
         }
 
-        /* 3. عرض الطلبات */
         function renderAdminOrders() {
             const container = document.getElementById('adminOrdersContainer');
-            container.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 1rem;">جاري تحميل الطلبات من السحابة...</p>';
-
             database.ref('orders').once('value', (snapshot) => {
                 const data = snapshot.val();
                 if (!data) {
-                    container.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 2rem;">لا توجد أي طلبات شراء حالياً.</p>';
+                    container.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 2rem;">لا توجد أي طلبات شراء.</p>';
                     return;
                 }
 
@@ -1267,17 +1518,14 @@
                     container.innerHTML += `
                         <div class="order-card">
                             <div class="order-card-header">
-                                <span>طلب شراء رقم #${order.id} - ${order.date}</span>
-                                <button class="delete-order-btn" onclick="deleteSingleOrder(${order.id})"><i class="fa-solid fa-xmark"></i> حذف الطلب</button>
+                                <span>طلب رقم #${order.id} - ${order.date}</span>
+                                <button class="delete-order-btn" onclick="deleteSingleOrder(${order.id})"><i class="fa-solid fa-xmark"></i> حذف</button>
                             </div>
                             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.5rem; font-size: 0.95rem;">
                                 <div><strong>المنتج:</strong> ${order.productTitle} (${order.price})</div>
-                                <div><strong>الاسم الكامل:</strong> ${order.firstName} ${order.lastName}</div>
-                                <div><strong>رقم الهاتف:</strong> <a href="tel:${order.phone}" style="color: var(--success-color);">${order.phone}</a></div>
+                                <div><strong>الزبون:</strong> ${order.firstName} ${order.lastName}</div>
+                                <div><strong>الهاتف:</strong> ${order.phone}</div>
                                 <div><strong>العنوان:</strong> ${order.address}</div>
-                            </div>
-                            <div style="font-size: 0.85rem; color: var(--text-muted); border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 0.3rem;">
-                                <strong>الملاحظات:</strong> ${order.notes}
                             </div>
                         </div>
                     `;
@@ -1286,13 +1534,13 @@
         }
 
         function deleteSingleOrder(orderId) {
-            if (confirm("هل أنت تأكد من حذف هذا الطلب من السحابة؟")) {
+            if (confirm("هل أنت تأكد من حذف الطلب؟")) {
                 database.ref('orders/' + orderId).remove().then(() => renderAdminOrders());
             }
         }
 
         function clearAllOrders() {
-            if (confirm("هل أنت تأكد من مسح جميع الطلبات من السحابة؟")) {
+            if (confirm("مسح كافة الطلبات؟")) {
                 database.ref('orders').remove().then(() => renderAdminOrders());
             }
         }
