@@ -44,7 +44,7 @@
             top: 0;
             z-index: 100;
             border-bottom: 1px solid var(--border-color);
-            padding: 1rem 2rem;
+            padding: 1rem 1.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -53,7 +53,7 @@
         }
 
         .logo {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: 800;
             color: var(--accent-color);
             display: flex;
@@ -66,6 +66,13 @@
             align-items: center;
             gap: 0.8rem;
             flex-wrap: wrap;
+            width: 100%;
+        }
+
+        @media (min-width: 768px) {
+            .header-actions {
+                width: auto;
+            }
         }
 
         .search-box {
@@ -75,7 +82,8 @@
             border: 1px solid var(--border-color);
             border-radius: 50px;
             padding: 0.5rem 1.2rem;
-            width: 220px;
+            flex: 1;
+            min-width: 200px;
         }
 
         .search-box input {
@@ -85,6 +93,7 @@
             color: white;
             width: 100%;
             margin-right: 8px;
+            font-size: 16px;
         }
 
         .sell-btn {
@@ -97,9 +106,11 @@
             font-weight: 800;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
             transition: 0.3s;
             box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            flex: 1;
         }
 
         .sell-btn:hover {
@@ -126,14 +137,13 @@
             color: white;
         }
 
-        /* شريط التصفية والفلترة المتقدم */
         .filter-bar {
             background: rgba(30, 41, 59, 0.8);
             backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--border-color);
-            padding: 1rem 2rem;
+            padding: 1rem;
             display: flex;
-            gap: 15px;
+            gap: 10px;
             flex-wrap: wrap;
             align-items: center;
             justify-content: center;
@@ -145,8 +155,10 @@
             gap: 8px;
             background: rgba(0, 0, 0, 0.3);
             border: 1px solid var(--border-color);
-            padding: 0.4rem 0.8rem;
+            padding: 0.5rem 0.8rem;
             border-radius: 10px;
+            flex: 1;
+            min-width: 140px;
         }
 
         .filter-group i {
@@ -161,6 +173,7 @@
             font-size: 0.9rem;
             font-weight: 600;
             cursor: pointer;
+            width: 100%;
         }
 
         .filter-group select option {
@@ -185,7 +198,7 @@
         }
 
         .categories-container {
-            padding: 1.2rem 2rem 0.5rem 2rem;
+            padding: 1rem;
             display: flex;
             gap: 10px;
             overflow-x: auto;
@@ -206,6 +219,7 @@
             align-items: center;
             gap: 8px;
             flex-shrink: 0;
+            font-size: 0.9rem;
         }
 
         .cat-btn:hover, .cat-btn.active {
@@ -218,14 +232,14 @@
             max-width: 1200px;
             margin: 0 auto;
             width: 100%;
-            padding: 1.5rem 2rem;
+            padding: 1rem;
             flex: 1;
         }
 
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
             padding-bottom: 1.5rem;
         }
 
@@ -272,13 +286,13 @@
 
         .product-img {
             width: 100%;
-            height: 200px;
+            height: 190px;
             object-fit: cover;
             background: #1e293b;
         }
 
         .product-info {
-            padding: 1.2rem;
+            padding: 1rem;
             display: flex;
             flex-direction: column;
             gap: 0.5rem;
@@ -286,14 +300,14 @@
         }
 
         .product-category {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: var(--accent-color);
             text-transform: uppercase;
             font-weight: 700;
         }
 
         .product-title {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 700;
             white-space: nowrap;
             overflow: hidden;
@@ -302,7 +316,7 @@
 
         .product-rating {
             color: var(--gold);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
         .product-bottom {
@@ -310,11 +324,11 @@
             justify-content: space-between;
             align-items: center;
             margin-top: auto;
-            padding-top: 10px;
+            padding-top: 8px;
         }
 
         .product-price {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 800;
             color: var(--success-color);
         }
@@ -323,43 +337,54 @@
             background: rgba(99, 102, 241, 0.2);
             color: var(--accent-color);
             border: none;
-            padding: 0.4rem 0.8rem;
+            padding: 0.4rem 0.7rem;
             border-radius: 8px;
             cursor: pointer;
             font-weight: 700;
+            font-size: 0.85rem;
         }
 
-        @media (max-width: 768px) {
-            header { flex-direction: column; }
-            .container { padding: 1rem; }
-            .filter-bar { flex-direction: column; align-items: stretch; }
-            .filter-group { justify-content: space-between; }
-            
-            .products-grid {
-                display: flex;
-                flex-direction: column;
-                gap: 1rem;
+        /* تحسين العرض على الهواتف */
+        @media (max-width: 600px) {
+            header {
+                padding: 0.8rem;
             }
-
+            .filter-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .filter-group {
+                width: 100%;
+            }
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
             .product-card {
                 flex-direction: row;
-                height: 140px;
+                height: 130px;
                 align-items: center;
             }
-
             .product-img {
-                width: 120px;
+                width: 110px;
                 height: 100%;
                 flex-shrink: 0;
             }
-
+            .product-badge-wilaya {
+                top: 5px;
+                right: 5px;
+                font-size: 0.65rem;
+                padding: 0.2rem 0.4rem;
+            }
             .product-info {
-                padding: 0.8rem;
+                padding: 0.6rem;
                 justify-content: space-between;
             }
-
-            .product-title { font-size: 1rem; }
-            .product-price { font-size: 1rem; }
+            .product-title {
+                font-size: 0.95rem;
+            }
+            .product-price {
+                font-size: 1rem;
+            }
         }
 
         .modal-overlay {
@@ -396,12 +421,15 @@
             border-radius: 50%;
             cursor: pointer;
             font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .modal-header-flex {
             display: flex;
             gap: 1.5rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             flex-wrap: wrap;
         }
 
@@ -409,7 +437,13 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
-            width: 280px;
+            width: 100%;
+        }
+
+        @media(min-width: 650px) {
+            .gallery-container {
+                width: 280px;
+            }
         }
 
         .modal-img {
@@ -457,7 +491,7 @@
             border: none;
             padding: 0.8rem 1.5rem;
             border-radius: 10px;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 800;
             cursor: pointer;
             display: flex;
@@ -465,7 +499,8 @@
             justify-content: center;
             gap: 10px;
             transition: 0.3s;
-            margin-top: 10px;
+            margin-top: 5px;
+            width: 100%;
         }
 
         .btn-order-now:hover {
@@ -481,7 +516,7 @@
 
         .form-section-title {
             color: var(--accent-color);
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 700;
             border-bottom: 1px solid var(--border-color);
             padding-bottom: 0.4rem;
@@ -495,7 +530,7 @@
         }
 
         .form-group label {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: var(--text-muted);
         }
 
@@ -506,7 +541,8 @@
             padding: 0.7rem;
             color: white;
             outline: none;
-            font-size: 0.95rem;
+            font-size: 16px; /* منع التكبير التلقائي في الآيفون */
+            width: 100%;
         }
 
         .price-input-wrapper {
@@ -533,27 +569,23 @@
             user-select: none;
         }
 
-        .form-group input[type="file"] {
-            padding: 0.4rem;
-            cursor: pointer;
-        }
-
-        .form-group select option {
-            background: #1e293b;
-            color: white;
-        }
-
         .form-row {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
             gap: 1rem;
+        }
+
+        @media(min-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr 1fr;
+            }
         }
 
         .admin-tabs {
             display: flex;
             gap: 10px;
             border-bottom: 1px solid var(--border-color);
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             padding-bottom: 0.5rem;
             overflow-x: auto;
         }
@@ -565,7 +597,7 @@
             padding: 0.5rem 1rem;
             cursor: pointer;
             font-weight: 700;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             border-radius: 8px;
             transition: 0.3s;
             white-space: nowrap;
@@ -595,70 +627,70 @@
         .order-card-header {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             border-bottom: 1px solid rgba(255,255,255,0.05);
             padding-bottom: 0.5rem;
             font-weight: 700;
             color: var(--accent-color);
+            font-size: 0.9rem;
+            flex-wrap: gap;
         }
 
         .approve-btn {
             background: rgba(16, 185, 129, 0.2);
             color: var(--success-color);
             border: 1px solid var(--success-color);
-            padding: 0.4rem 0.8rem;
+            padding: 0.3rem 0.6rem;
             border-radius: 6px;
             cursor: pointer;
             font-weight: 700;
-            font-size: 0.85rem;
-            transition: 0.2s;
-        }
-
-        .approve-btn:hover {
-            background: var(--success-color);
-            color: white;
+            font-size: 0.8rem;
         }
 
         .delete-order-btn {
             background: rgba(239, 68, 68, 0.2);
             color: var(--danger-color);
             border: none;
-            padding: 0.4rem 0.8rem;
+            padding: 0.3rem 0.6rem;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
         }
 
         .edit-btn {
             background: rgba(251, 191, 36, 0.2);
             color: var(--gold);
             border: none;
-            padding: 0.4rem 0.8rem;
+            padding: 0.3rem 0.6rem;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             margin-left: 5px;
         }
 
         footer {
             background: rgba(15, 23, 42, 0.95);
             border-top: 1px solid var(--border-color);
-            padding: 2rem;
+            padding: 1.5rem 1rem;
             text-align: center;
             margin-top: auto;
         }
 
         .footer-banner {
             background: linear-gradient(90deg, #6366f1, #a855f7);
-            padding: 1.5rem;
+            padding: 1.2rem;
             border-radius: 12px;
             margin-bottom: 1rem;
             color: white;
         }
 
-        @media(max-width: 600px) {
-            .modal-header-flex { flex-direction: column; }
-            .gallery-container { width: 100%; }
-            .form-row { grid-template-columns: 1fr; }
+        .footer-banner h2 {
+            font-size: 1.2rem;
+        }
+
+        .footer-banner p {
+            font-size: 0.9rem;
+            margin-top: 5px;
         }
     </style>
 </head>
@@ -666,7 +698,7 @@
 
     <header>
         <div class="logo">
-            <i class="fa-solid fa-cart-shopping"></i> متجر الجزائر الإلكتروني
+            <i class="fa-solid fa-cart-shopping"></i> سوق الجزائر
         </div>
         <div class="header-actions">
             <div class="search-box">
@@ -675,7 +707,7 @@
             </div>
             
             <button class="sell-btn" onclick="openSellModal()">
-                <i class="fa-solid fa-store"></i> اعرض منتجك للبيع
+                <i class="fa-solid fa-store"></i> اعرض سلعتك باطل
             </button>
 
             <button class="admin-btn" onclick="openAdminPanel()">
@@ -684,12 +716,12 @@
         </div>
     </header>
 
-    <!-- شريط التصفية والفلترة المتقدم -->
+    <!-- شريط الفلترة والتصفية -->
     <div class="filter-bar">
         <div class="filter-group">
             <i class="fa-solid fa-location-dot"></i>
             <select id="filterWilaya" onchange="applyFilters()">
-                <option value="all">كل الولايات (الكل)</option>
+                <option value="all">كل الولايات</option>
                 <option value="01 - أدرار">01 - أدرار</option>
                 <option value="02 - الشلف">02 - الشلف</option>
                 <option value="03 - الأغواط">03 - الأغواط</option>
@@ -758,23 +790,9 @@
                 <option value="electronics">إلكترونيات وتكنولوجيا</option>
                 <option value="fashion">الموضة والأزياء</option>
                 <option value="home">المنزل والديكور</option>
-                <option value="beauty">الصحة والجمال</option>
                 <option value="sports">الرياضة واللياقة</option>
-                <option value="baby">مستلزمات الأطفال</option>
                 <option value="auto">مستلزمات السيارات</option>
-                <option value="books">كتب ومكتبة</option>
-                <option value="toys">ألعاب وهوايات</option>
-                <option value="pets">الحيوانات الأليفة</option>
-                <option value="courses">دورات وكورسات</option>
-            </select>
-        </div>
-
-        <div class="filter-group">
-            <i class="fa-solid fa-arrow-down-short-wide"></i>
-            <select id="filterPriceSort" onchange="applyFilters()">
-                <option value="default">الترتيب حسب الأحدث</option>
-                <option value="low-to-high">السعر: من الأقل للأعلى</option>
-                <option value="high-to-low">السعر: من الأعلى للأقل</option>
+                <option value="other">أغراض متنوعة</option>
             </select>
         </div>
 
@@ -787,12 +805,11 @@
     <div class="categories-container">
         <button class="cat-btn active" onclick="selectCategory('all', event)"><i class="fa-solid fa-border-all"></i> الكل</button>
         <button class="cat-btn" onclick="selectCategory('electronics', event)"><i class="fa-solid fa-laptop"></i> إلكترونيات</button>
-        <button class="cat-btn" onclick="selectCategory('fashion', event)"><i class="fa-solid fa-shirt"></i> موضة وأزياء</button>
-        <button class="cat-btn" onclick="selectCategory('home', event)"><i class="fa-solid fa-house"></i> منزل وديكور</button>
-        <button class="cat-btn" onclick="selectCategory('beauty', event)"><i class="fa-solid fa-pump-soap"></i> صحة وجمال</button>
+        <button class="cat-btn" onclick="selectCategory('fashion', event)"><i class="fa-solid fa-shirt"></i> موضة</button>
+        <button class="cat-btn" onclick="selectCategory('home', event)"><i class="fa-solid fa-house"></i> منزل</button>
         <button class="cat-btn" onclick="selectCategory('sports', event)"><i class="fa-solid fa-dumbbell"></i> رياضة</button>
         <button class="cat-btn" onclick="selectCategory('auto', event)"><i class="fa-solid fa-car"></i> سيارات</button>
-        <button class="cat-btn" onclick="selectCategory('pets', event)"><i class="fa-solid fa-dog"></i> حيوانات أليفة</button>
+        <button class="cat-btn" onclick="selectCategory('other', event)"><i class="fa-solid fa-box"></i> متنوعات</button>
     </div>
 
     <div class="container">
@@ -801,33 +818,29 @@
         </div>
     </div>
 
-    <!-- نافذة عرض المنتج للبيع -->
+    <!-- نافذة عرض المنتج (باطل) -->
     <div class="modal-overlay" id="sellModal">
-        <div class="modal-content" style="max-width: 600px;">
+        <div class="modal-content" style="max-width: 550px;">
             <button class="close-btn" onclick="closeModal('sellModal')">&times;</button>
-            <h2 style="margin-bottom: 0.5rem; color: var(--success-color);">
-                <i class="fa-solid fa-tags"></i> اعرض منتجك للبيع
+            <h2 style="margin-bottom: 0.5rem; color: var(--success-color); font-size: 1.2rem;">
+                <i class="fa-solid fa-store"></i> اعرض سلعتك للبيع (باطل 100%)
             </h2>
-            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">أدخل بياناتك وسيتم مراجعة منتجك من الإدارة قبل النشر.</p>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">حط تصوير للمنتج تاعك وزيد السعر، وسيتم نشره مباشرة!</p>
 
             <form class="order-form-container" onsubmit="handleUserSubmitProduct(event)">
-                <div class="form-section-title"><i class="fa-solid fa-user"></i> المعلومات الشخصية للبائع</div>
+                <div class="form-section-title"><i class="fa-solid fa-user"></i> معلومات البائع</div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label>الاسم الأول *</label>
-                        <input type="text" id="sellerFirstName" required placeholder="مثال: أحمد">
+                        <label>الاسم واللقب *</label>
+                        <input type="text" id="sellerName" required placeholder="مثال: أمين محمد">
                     </div>
-                    <div class="form-group">
-                        <label>اللقب *</label>
-                        <input type="text" id="sellerLastName" required placeholder="مثال: محمد">
-                    </div>
-                </div>
-
-                <div class="form-row">
                     <div class="form-group">
                         <label>رقم الهاتف *</label>
                         <input type="tel" id="sellerPhone" required placeholder="07XXXXXXXX">
                     </div>
+                </div>
+
+                <div class="form-row">
                     <div class="form-group">
                         <label>الولاية *</label>
                         <select id="sellerWilaya" required>
@@ -892,25 +905,24 @@
                             <option value="58 - المنيعة">58 - المنيعة</option>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label>الدائرة / البلدية يدوياً *</label>
+                        <input type="text" id="sellerCity" required placeholder="مثال: الشلف، تنس...">
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label>الدائرة / البلدية (اكتبها يدوياً) *</label>
-                    <input type="text" id="sellerCity" required placeholder="مثال: الشلف، تنس، باب الزوار...">
-                </div>
-
-                <div class="form-section-title"><i class="fa-solid fa-box"></i> معلومات المنتج</div>
+                <div class="form-section-title"><i class="fa-solid fa-box"></i> معلومات السلعة</div>
                 
                 <div class="form-group">
-                    <label>اسم المنتج *</label>
-                    <input type="text" id="userProdTitle" required placeholder="اكتب اسم المنتج بوضوح...">
+                    <label>اسم السلعة أو المنتج *</label>
+                    <input type="text" id="userProdTitle" required placeholder="مثال: هاتف ريدمي بحالة ممتازة">
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label>سعر المنتج *</label>
+                        <label>السعر المطلوب *</label>
                         <div class="price-input-wrapper">
-                            <input type="number" id="userProdPriceNum" required placeholder="مثال: 4500">
+                            <input type="number" id="userProdPriceNum" required placeholder="مثال: 25000">
                             <span class="price-currency">د.ج</span>
                         </div>
                     </div>
@@ -921,30 +933,25 @@
                             <option value="electronics">إلكترونيات وتكنولوجيا</option>
                             <option value="fashion">الموضة والأزياء</option>
                             <option value="home">المنزل والديكور</option>
-                            <option value="beauty">الصحة والجمال</option>
                             <option value="sports">الرياضة واللياقة</option>
-                            <option value="baby">مستلزمات الأطفال</option>
                             <option value="auto">مستلزمات السيارات</option>
-                            <option value="books">كتب ومكتبة</option>
-                            <option value="toys">ألعاب وهوايات</option>
-                            <option value="pets">الحيوانات الأليفة</option>
-                            <option value="courses">دورات وكورسات</option>
+                            <option value="other">أغراض متنوعة</option>
                         </select>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label>صور المنتج *</label>
-                    <input type="file" id="userProdFiles" accept="image/*" multiple required>
+                    <label>تصوير للمنتج (صورة السلعة) *</label>
+                    <input type="file" id="userProdFile" accept="image/*" required style="padding: 0.4rem; cursor: pointer;">
                 </div>
 
                 <div class="form-group">
-                    <label>وصف المنتج (اختياري)</label>
-                    <textarea id="userProdDesc" rows="3" placeholder="اكتب وصفاً مختصراً أو حالة المنتج..."></textarea>
+                    <label>وصف إضافي (اختياري)</label>
+                    <textarea id="userProdDesc" rows="2" placeholder="اكتب تفاصيل أخرى عن السلعة..."></textarea>
                 </div>
 
-                <button type="submit" id="userSubmitBtn" class="btn-order-now" style="width: 100%; margin-top: 10px;">
-                    <i class="fa-solid fa-paper-plane"></i> إرسال للمراجعة والنشر
+                <button type="submit" id="userSubmitBtn" class="btn-order-now" style="margin-top: 5px;">
+                    <i class="fa-solid fa-paper-plane"></i> نشر السلعة الآن (باطل)
                 </button>
             </form>
         </div>
@@ -956,20 +963,19 @@
             <button class="close-btn" onclick="closeModal('productModal')">&times;</button>
             <div class="modal-header-flex">
                 <div class="gallery-container">
-                    <img id="mImage" class="modal-img" src="" alt="صورة المنتج">
-                    <div class="thumbnails-list" id="mThumbnails"></div>
+                    <img id="mImage" class="modal-img" src="" alt="صورة السلعة">
                 </div>
                 <div class="modal-details">
                     <span id="mCategory" class="product-category"></span>
-                    <h2 id="mTitle"></h2>
+                    <h2 id="mTitle" style="font-size: 1.2rem;"></h2>
                     <div id="mRating" class="product-rating"></div>
-                    <p id="mDesc" style="color: var(--text-muted); font-size: 0.95rem;"></p>
+                    <p id="mDesc" style="color: var(--text-muted); font-size: 0.9rem;"></p>
                     <div class="product-price" id="mPrice"></div>
 
-                    <div id="mSellerInfo" style="margin-top: 0.5rem; padding: 0.8rem; background: rgba(0,0,0,0.3); border-radius: 8px; font-size: 0.85rem; color: var(--text-muted);"></div>
+                    <div id="mSellerInfo" style="padding: 0.8rem; background: rgba(0,0,0,0.3); border-radius: 8px; font-size: 0.85rem; color: var(--text-muted);"></div>
                     
                     <button class="btn-order-now" onclick="openOrderModal()">
-                        <i class="fa-solid fa-bag-shopping"></i> طلب شراء هذا المنتج الان
+                        <i class="fa-solid fa-bag-shopping"></i> طلب شراء السلعة
                     </button>
                 </div>
             </div>
@@ -978,81 +984,68 @@
 
     <!-- نافذة طلب الشراء -->
     <div class="modal-overlay" id="orderModal">
-        <div class="modal-content" style="max-width: 500px;">
+        <div class="modal-content" style="max-width: 450px;">
             <button class="close-btn" onclick="closeModal('orderModal')">&times;</button>
-            <h2 style="margin-bottom: 0.5rem; color: var(--success-color);">
+            <h2 style="margin-bottom: 0.5rem; color: var(--success-color); font-size: 1.1rem;">
                 <i class="fa-solid fa-file-signature"></i> تقديم طلب شراء
             </h2>
-            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">
-                المنتج المطلوب: <strong id="orderProductTitle" style="color: white;"></strong>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">
+                السلعة: <strong id="orderProductTitle" style="color: white;"></strong>
             </p>
 
             <form class="order-form-container" onsubmit="handleOrderSubmit(event)">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>الاسم الأول *</label>
-                        <input type="text" id="custFirstName" required placeholder="مثال: أحمد">
-                    </div>
-                    <div class="form-group">
-                        <label>اللقب / العائلة *</label>
-                        <input type="text" id="custLastName" required placeholder="مثال: محمد">
-                    </div>
+                <div class="form-group">
+                    <label>الاسم واللقب *</label>
+                    <input type="text" id="custName" required placeholder="مثال: خالد بن علي">
                 </div>
                 <div class="form-group">
                     <label>رقم الهاتف *</label>
-                    <input type="tel" id="custPhone" required placeholder="07XXXXXXXX">
+                    <input type="tel" id="custPhone" required placeholder="06XXXXXXXX">
                 </div>
                 <div class="form-group">
                     <label>العنوان الكامل (الولاية والبلدية) *</label>
-                    <input type="text" id="custAddress" required placeholder="مثال: وهران، حاسي مسعود">
+                    <input type="text" id="custAddress" required placeholder="مثال: الشلف، وسط المدينة">
                 </div>
-                <div class="form-group">
-                    <label>ملاحظات إضافية (اختياري)</label>
-                    <textarea id="custNotes" rows="2" placeholder="أي تفاصيل تود إضافتها للطلب..."></textarea>
-                </div>
-                <button type="submit" class="btn-order-now" style="width: 100%; margin-top: 5px;">
-                    <i class="fa-solid fa-check-circle"></i> تأكيد وإرسال الطلب
+                <button type="submit" class="btn-order-now" style="margin-top: 5px;">
+                    <i class="fa-solid fa-check-circle"></i> تأكيد الطلب وإرساله
                 </button>
             </form>
         </div>
     </div>
 
-    <!-- نافذة النجاح -->
+    <!-- نافذة نجاح العملية -->
     <div class="modal-overlay" id="successModal">
-        <div class="modal-content" style="max-width: 450px; text-align: center; padding: 2rem;">
-            <i class="fa-solid fa-circle-check" style="font-size: 4rem; color: var(--success-color); margin-bottom: 1rem;"></i>
+        <div class="modal-content" style="max-width: 400px; text-align: center; padding: 2rem;">
+            <i class="fa-solid fa-circle-check" style="font-size: 3.5rem; color: var(--success-color); margin-bottom: 1rem;"></i>
             <h2 style="margin-bottom: 0.5rem;">تمت العملية بنجاح!</h2>
-            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;" id="successMessageDetails"></p>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;" id="successMessageDetails"></p>
             <button class="cat-btn active" style="margin: 0 auto;" onclick="closeModal('successModal')">العودة للمتجر</button>
         </div>
     </div>
 
     <!-- لوحة الأدمن -->
     <div class="modal-overlay" id="adminModal">
-        <div class="modal-content" style="max-width: 850px;">
+        <div class="modal-content" style="max-width: 800px;">
             <button class="close-btn" onclick="closeModal('adminModal')">&times;</button>
-            <h2 style="margin-bottom: 1rem;"><i class="fa-solid fa-user-shield" style="color: var(--danger-color);"></i> لوحة التحكم (الأدمن)</h2>
+            <h2 style="margin-bottom: 1rem; font-size: 1.2rem;"><i class="fa-solid fa-user-shield" style="color: var(--danger-color);"></i> لوحة التحكم (الأدمن)</h2>
 
             <div class="admin-tabs">
-                <button class="admin-tab-btn active" onclick="switchAdminTab('pending-products', event)"><i class="fa-solid fa-clock"></i> طلبات المعاينة</button>
-                <button class="admin-tab-btn" onclick="switchAdminTab('manage-products', event)"><i class="fa-solid fa-boxes-stacked"></i> المنتجات المنشورة</button>
-                <button class="admin-tab-btn" onclick="switchAdminTab('orders', event)"><i class="fa-solid fa-list-check"></i> قائمة الطلبات</button>
+                <button class="admin-tab-btn active" onclick="switchAdminTab('products', event)"><i class="fa-solid fa-boxes-stacked"></i> السلع المعروضة</button>
+                <button class="admin-tab-btn" onclick="switchAdminTab('orders', event)"><i class="fa-solid fa-list-check"></i> طلبات الشراء</button>
             </div>
 
-            <div id="adminPendingProductsSection">
-                <h3 style="margin-bottom: 1rem; color: var(--gold);">منتجات في انتظار موافقتك</h3>
-                <div class="orders-list" id="adminPendingProductsContainer"></div>
-            </div>
-
-            <div id="adminManageProductsSection" style="display: none;">
-                <h3 style="margin-bottom: 1rem;">المنتجات المعروضة للجميع حالياً</h3>
+            <div id="adminProductsSection">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h3 style="font-size: 1rem;">إدارة السلع</h3>
+                    <button class="delete-order-btn" onclick="clearAllProducts()"><i class="fa-solid fa-trash"></i> مسح الكل</button>
+                </div>
                 <div class="orders-list" id="adminProductsContainer"></div>
             </div>
 
             <div id="adminOrdersSection" style="display: none;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                    <h3>الطلبات المسجلة من الزبائن</h3>
-                    <button class="delete-order-btn" onclick="clearAllOrders()"><i class="fa-solid fa-trash"></i> مسح كافة الطلبات</button>
+                    <h3 style="font-size: 1rem;">طلبات الزبائن</h3>
+                    <button class="delete-order-btn" onclick="clearAllOrders()"><i class="fa-solid fa-trash"></i> مسح الطلبات</button>
                 </div>
                 <div class="orders-list" id="adminOrdersContainer"></div>
             </div>
@@ -1061,59 +1054,56 @@
 
     <footer>
         <div class="footer-banner">
-            <h2><i class="fa-solid fa-bullhorn"></i> اعرض منتجاتك أو خدماتك معنا</h2>
-            <p style="margin-top: 5px;">يمكنك عرض ووضع السلع على المتجر مباشرة وسيتم مراجعتها ونشرها مجاناً!</p>
+            <h2><i class="fa-solid fa-bullhorn"></i> عندك سلعة حاب تبيعها؟</h2>
+            <p>انشرها معنا مجاناً وبدون أي تكاليف، وخلي الناس تشوف منتجاتك وتبيعها بكل سهولة!</p>
         </div>
-        <p style="color: var(--text-muted); font-size: 0.85rem;">جميع الحقوق محفوظة &copy; 2026 - متجر الجزائر الإلكتروني</p>
+        <p style="color: var(--text-muted); font-size: 0.8rem;">جميع الحقوق محفوظة &copy; 2026 - سوق الجزائر الإلكتروني</p>
     </footer>
 
-    <!-- تحميل مكتبات Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
-
     <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyCUmO8u45HTjFli-kIWKJ6Rn_frK96_wzM",
-            authDomain: "mydzstore.firebaseapp.com",
-            databaseURL: "https://mydzstore-default-rtdb.firebaseio.com",
-            projectId: "mydzstore",
-            storageBucket: "mydzstore.firebasestorage.app",
-            messagingSenderId: "68245133584",
-            appId: "1:68245133584:web:447fd51620c84071dd6d95",
-            measurementId: "G-Q6LECZFZJF"
-        };
-
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
-
-        const ADMIN_PASSWORD = "1234";
-
+        const ADMIN_PASSWORD = "123";
         let allProducts = [];
-        let approvedProducts = [];
         let activeProductId = null;
 
-        function listenToProducts() {
-            database.ref('products').on('value', (snapshot) => {
-                const data = snapshot.val();
-                if (data) {
-                    allProducts = Object.values(data);
-                    allProducts.reverse();
-                    approvedProducts = allProducts.filter(p => p.status === 'approved');
-                } else {
-                    allProducts = [];
-                    approvedProducts = [];
-                }
-                applyFilters();
-            });
+        // تحميل البيانات عند فتح الصفحة
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProductsFromStorage();
+        });
+
+        function loadProductsFromStorage() {
+            const saved = localStorage.getItem('dz_store_products');
+            if (saved) {
+                allProducts = JSON.parse(saved);
+            } else {
+                // منتجات تجريبية افتراضية أولية
+                allProducts = [
+                    {
+                        id: 1,
+                        title: "هاتف ذكي بحالة جيدة",
+                        category: "electronics",
+                        categoryName: "إلكترونيات وتكنولوجيا",
+                        price: "28000 د.ج",
+                        rating: 5,
+                        image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500",
+                        description: "هاتف مستعمل لمدة قصيرة، مع جميع ملحقاته.",
+                        seller: { name: "أحمد الجزائر", phone: "0711223344", wilaya: "16 - الجزائر العاصمة", city: "باب الزوار" }
+                    }
+                ];
+                saveProductsToStorage();
+            }
+            applyFilters();
+        }
+
+        function saveProductsToStorage() {
+            localStorage.setItem('dz_store_products', JSON.stringify(allProducts));
         }
 
         function applyFilters() {
             const query = document.getElementById('searchInput').value.toLowerCase();
             const selectedWilaya = document.getElementById('filterWilaya').value;
             const selectedCategory = document.getElementById('filterCategoryDropdown').value;
-            const sortPrice = document.getElementById('filterPriceSort').value;
 
-            let result = [...approvedProducts];
+            let result = [...allProducts];
 
             if (query) {
                 result = result.filter(p => p.title.toLowerCase().includes(query));
@@ -1127,18 +1117,7 @@
                 result = result.filter(p => p.category === selectedCategory);
             }
 
-            if (sortPrice === 'low-to-high') {
-                result.sort((a, b) => extractPriceNum(a.price) - extractPriceNum(b.price));
-            } else if (sortPrice === 'high-to-low') {
-                result.sort((a, b) => extractPriceNum(b.price) - extractPriceNum(a.price));
-            }
-
             displayProducts(result);
-        }
-
-        function extractPriceNum(priceStr) {
-            if(!priceStr) return 0;
-            return parseFloat(priceStr.replace(/[^0-9.]/g, '')) || 0;
         }
 
         function selectCategory(cat, evt) {
@@ -1153,11 +1132,8 @@
             document.getElementById('searchInput').value = '';
             document.getElementById('filterWilaya').value = 'all';
             document.getElementById('filterCategoryDropdown').value = 'all';
-            document.getElementById('filterPriceSort').value = 'default';
-
             document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelector('.cat-btn').classList.add('active');
-
             applyFilters();
         }
 
@@ -1166,13 +1142,12 @@
             grid.innerHTML = '';
 
             if (items.length === 0) {
-                grid.innerHTML = '<p style="color: var(--text-muted); padding: 1.5rem; width: 100%;">لا توجد منتجات مطابقة لخيارات الفلترة الحالية.</p>';
+                grid.innerHTML = '<p style="color: var(--text-muted); padding: 1.5rem; width: 100%; text-align: center;">لا توجد منتجات مطابقة حالياً.</p>';
                 return;
             }
             
             items.forEach(product => {
-                const starsHtml = '★'.repeat(product.rating || 5);
-                const wilayaText = product.seller && product.seller.wilaya ? product.seller.wilaya : 'غير محدودة';
+                const wilayaText = product.seller && product.seller.wilaya ? product.seller.wilaya : 'الجزائر';
 
                 grid.innerHTML += `
                     <div class="product-card" onclick="openProductModal(${product.id})">
@@ -1180,13 +1155,12 @@
                         <img src="${product.image}" class="product-img" alt="${product.title}">
                         <div class="product-info">
                             <div>
-                                <span class="product-category">${product.categoryName || product.category}</span>
+                                <span class="product-category">${product.categoryName || 'متنوعات'}</span>
                                 <h3 class="product-title">${product.title}</h3>
-                                <div class="product-rating">${starsHtml}</div>
                             </div>
                             <div class="product-bottom">
                                 <span class="product-price">${product.price}</span>
-                                <button class="btn-view">التفاصيل والطلب</button>
+                                <button class="btn-view">التفاصيل</button>
                             </div>
                         </div>
                     </div>
@@ -1199,22 +1173,20 @@
         }
 
         function openProductModal(id) {
-            const product = approvedProducts.find(p => p.id === id);
+            const product = allProducts.find(p => p.id === id);
             activeProductId = id;
 
-            const mainImg = document.getElementById('mImage');
-            mainImg.src = product.image;
-
+            document.getElementById('mImage').src = product.image;
             document.getElementById('mTitle').innerText = product.title;
-            document.getElementById('mCategory').innerText = product.categoryName || product.category;
+            document.getElementById('mCategory').innerText = product.categoryName || 'متنوعات';
             document.getElementById('mPrice').innerText = product.price;
-            document.getElementById('mDesc').innerText = product.description || 'لا يوجد وصف متاح لهذا المنتج.';
-            document.getElementById('mRating').innerHTML = '★'.repeat(product.rating || 5);
+            document.getElementById('mDesc').innerText = product.description || 'لا يوجد وصف متاح.';
+            document.getElementById('mRating').innerHTML = '★★★★★';
 
             const sellerInfoDiv = document.getElementById('mSellerInfo');
             if (product.seller) {
                 sellerInfoDiv.innerHTML = `
-                    <strong>معلومات البائع:</strong> ${product.seller.firstName} ${product.seller.lastName} | 
+                    <strong>البائع:</strong> ${product.seller.name} | 
                     <i class="fa-solid fa-location-dot"></i> ${product.seller.wilaya} (${product.seller.city}) | 
                     <i class="fa-solid fa-phone"></i> ${product.seller.phone}
                 `;
@@ -1223,28 +1195,11 @@
                 sellerInfoDiv.style.display = 'none';
             }
 
-            const thumbsContainer = document.getElementById('mThumbnails');
-            thumbsContainer.innerHTML = '';
-
-            const allImgs = product.images && product.images.length > 0 ? product.images : [product.image];
-
-            allImgs.forEach((imgUrl, index) => {
-                thumbsContainer.innerHTML += `
-                    <img src="${imgUrl}" class="thumb-img ${index === 0 ? 'active' : ''}" onclick="changeModalImage('${imgUrl}', this)">
-                `;
-            });
-
             document.getElementById('productModal').style.display = 'flex';
         }
 
-        function changeModalImage(imgUrl, el) {
-            document.getElementById('mImage').src = imgUrl;
-            document.querySelectorAll('.thumb-img').forEach(t => t.classList.remove('active'));
-            el.classList.add('active');
-        }
-
         function openOrderModal() {
-            const product = approvedProducts.find(p => p.id === activeProductId);
+            const product = allProducts.find(p => p.id === activeProductId);
             document.getElementById('orderProductTitle').innerText = `${product.title} (${product.price})`;
             document.getElementById('productModal').style.display = 'none';
             document.getElementById('orderModal').style.display = 'flex';
@@ -1254,129 +1209,94 @@
             document.getElementById(modalId).style.display = 'none';
         }
 
-        function readFileAsDataURL(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = () => resolve(reader.result);
-                reader.onerror = reject;
-                reader.readAsDataURL(file);
-            });
-        }
-
-        async function handleUserSubmitProduct(event) {
+        function handleUserSubmitProduct(event) {
             event.preventDefault();
             const btn = document.getElementById('userSubmitBtn');
             btn.disabled = true;
-            btn.innerText = "جاري إرسال الطلب للسحابة...";
+            btn.innerText = "جاري النشر...";
 
-            const firstName = document.getElementById('sellerFirstName').value;
-            const lastName = document.getElementById('sellerLastName').value;
+            const name = document.getElementById('sellerName').value;
             const phone = document.getElementById('sellerPhone').value;
             const wilaya = document.getElementById('sellerWilaya').value;
             const city = document.getElementById('sellerCity').value;
 
             const title = document.getElementById('userProdTitle').value;
             const priceNum = document.getElementById('userProdPriceNum').value;
-            const priceFormatted = `${priceNum} د.ج`;
+            const priceFormatted = `${Number(priceNum).toLocaleString()} د.ج`;
 
             const categorySelect = document.getElementById('userProdCategory');
             const category = categorySelect.value;
             const categoryName = categorySelect.options[categorySelect.selectedIndex].text;
             const desc = document.getElementById('userProdDesc').value || 'لا يوجد وصف';
 
-            const fileInput = document.getElementById('userProdFiles');
-            const files = Array.from(fileInput.files);
+            const fileInput = document.getElementById('userProdFile');
+            const file = fileInput.files[0];
 
-            if (files.length === 0) {
-                alert("يرجى اختيار صورة واحدة على الأقل للمنتج.");
+            if (!file) {
+                alert("يرجى اختيار صورة للمنتج.");
                 btn.disabled = false;
-                btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> إرسال للمراجعة والنشر';
+                btn.innerText = "نشر السلعة الآن (باطل)";
                 return;
             }
 
-            try {
-                const imagesList = await Promise.all(files.map(file => readFileAsDataURL(file)));
-                const mainImg = imagesList[0];
-                const prodId = Date.now();
-
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imgData = e.target.result;
                 const newProduct = {
-                    id: prodId,
+                    id: Date.now(),
                     title: title,
                     category: category,
                     categoryName: categoryName,
                     price: priceFormatted,
                     rating: 5,
-                    image: mainImg,
-                    images: imagesList,
+                    image: imgData,
                     description: desc,
-                    status: "pending",
-                    seller: {
-                        firstName: firstName,
-                        lastName: lastName,
-                        phone: phone,
-                        wilaya: wilaya,
-                        city: city
-                    }
+                    seller: { name, phone, wilaya, city }
                 };
 
-                database.ref('products/' + prodId).set(newProduct, (err) => {
-                    btn.disabled = false;
-                    btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> إرسال للمراجعة والنشر';
-                    
-                    if (err) {
-                        alert("حدث خطأ أثناء الاتصال بالسحابة!");
-                    } else {
-                        document.getElementById('successMessageDetails').innerText = 
-                            `شكراً لك ${firstName}. تم إرسال منتجك (${title}) بنجاح، وسيتم نشره فور مراجعته وقبوله.`;
-                        
-                        event.target.reset();
-                        closeModal('sellModal');
-                        document.getElementById('successModal').style.display = 'flex';
-                    }
-                });
+                allProducts.unshift(newProduct);
+                saveProductsToStorage();
+                applyFilters();
 
-            } catch (err) {
                 btn.disabled = false;
-                btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> إرسال للمراجعة والنشر';
-                alert("حدث خطأ في معالجة الصور المختارة.");
-            }
+                btn.innerText = "نشر السلعة الآن (باطل)";
+                event.target.reset();
+                closeModal('sellModal');
+
+                document.getElementById('successMessageDetails').innerText = `تم نشر سلعتك (${title}) بنجاح وبدون أي تكلفة! أصبحت ظاهرة الآن للجميع.`;
+                document.getElementById('successModal').style.display = 'flex';
+            };
+            reader.readAsDataURL(file);
         }
 
         function handleOrderSubmit(event) {
             event.preventDefault();
-            const product = approvedProducts.find(p => p.id === activeProductId);
+            const product = allProducts.find(p => p.id === activeProductId);
             
             const newOrder = {
                 id: Math.floor(100000 + Math.random() * 900000),
                 productTitle: product.title,
                 price: product.price,
-                firstName: document.getElementById('custFirstName').value,
-                lastName: document.getElementById('custLastName').value,
+                name: document.getElementById('custName').value,
                 phone: document.getElementById('custPhone').value,
                 address: document.getElementById('custAddress').value,
-                notes: document.getElementById('custNotes').value || 'لا يوجد',
-                date: new Date().toLocaleString('ar-EG')
+                date: new Date().toLocaleString('ar-DZ')
             };
 
-            database.ref('orders/' + newOrder.id).set(newOrder, (error) => {
-                if (error) {
-                    alert("حدث خطأ أثناء إرسال الطلب!");
-                } else {
-                    document.getElementById('successMessageDetails').innerText = 
-                        `شكراً لك ${newOrder.firstName} ${newOrder.lastName}. تم تسجيل طلب الشراء (#${newOrder.id}) بنجاح.`;
-                    
-                    closeModal('orderModal');
-                    document.getElementById('successModal').style.display = 'flex';
-                    event.target.reset();
-                }
-            });
+            let orders = JSON.parse(localStorage.getItem('dz_store_orders')) || [];
+            orders.unshift(newOrder);
+            localStorage.setItem('dz_store_orders', JSON.stringify(orders));
+
+            closeModal('orderModal');
+            document.getElementById('successMessageDetails').innerText = `شكراً لك! تم إرسال طلب الشراء الخاص بك بنجاح وسيتم الاتصال بك قريباً.`;
+            document.getElementById('successModal').style.display = 'flex';
+            event.target.reset();
         }
 
         function openAdminPanel() {
-            const pass = prompt("يرجى إدخال كلمة سر الأدمن:");
+            const pass = prompt("أدخل كلمة سر الأدمن:");
             if (pass === ADMIN_PASSWORD) {
-                renderAdminPendingProducts();
-                renderAdminApprovedProducts();
+                renderAdminProducts();
                 renderAdminOrders();
                 document.getElementById('adminModal').style.display = 'flex';
             } else if (pass !== null) {
@@ -1388,164 +1308,84 @@
             document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
             evt.currentTarget.classList.add('active');
 
-            document.getElementById('adminPendingProductsSection').style.display = tabName === 'pending-products' ? 'block' : 'none';
-            document.getElementById('adminManageProductsSection').style.display = tabName === 'manage-products' ? 'block' : 'none';
+            document.getElementById('adminProductsSection').style.display = tabName === 'products' ? 'block' : 'none';
             document.getElementById('adminOrdersSection').style.display = tabName === 'orders' ? 'block' : 'none';
         }
 
-        function renderAdminPendingProducts() {
-            const container = document.getElementById('adminPendingProductsContainer');
-            const pendingList = allProducts.filter(p => p.status === 'pending');
-
-            if (pendingList.length === 0) {
-                container.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 1.5rem;">لا توجد طلبات منتجات معلقة.</p>';
-                return;
-            }
-
-            container.innerHTML = '';
-            pendingList.forEach(p => {
-                const s = p.seller || {};
-                container.innerHTML += `
-                    <div class="order-card" style="border: 1px solid var(--gold);">
-                        <div class="order-card-header" style="color: var(--gold);">
-                            <span>طلب نشر منتج جديد</span>
-                            <div>
-                                <button class="approve-btn" onclick="approveProduct(${p.id})"><i class="fa-solid fa-check"></i> قبول ونشر</button>
-                                <button class="delete-order-btn" onclick="deleteSingleProduct(${p.id})"><i class="fa-solid fa-xmark"></i> رفض وحذف</button>
-                            </div>
-                        </div>
-
-                        <div style="background: rgba(255,255,255,0.05); padding: 0.6rem; border-radius: 8px; font-size: 0.9rem; margin-bottom: 5px;">
-                            <strong>البائع:</strong> ${s.firstName || ''} ${s.lastName || ''} | 
-                            <strong>الهاتف:</strong> ${s.phone || ''} | 
-                            <strong>الموقع:</strong> ${s.wilaya || ''} - ${s.city || ''}
-                        </div>
-
-                        <div style="display: flex; gap: 12px; align-items: center;">
-                            <img src="${p.image}" style="width: 70px; height: 70px; border-radius: 8px; object-fit: cover;">
-                            <div>
-                                <strong style="font-size: 1.05rem; color: white;">${p.title}</strong>
-                                <div style="color: var(--success-color); font-weight: bold;">${p.price}</div>
-                                <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 3px;">الوصف: ${p.description}</div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        function approveProduct(prodId) {
-            database.ref('products/' + prodId).update({ status: 'approved' }).then(() => {
-                alert("تمت الموافقة على المنتج ونشره!");
-                renderAdminPendingProducts();
-                renderAdminApprovedProducts();
-            });
-        }
-
-        function renderAdminApprovedProducts() {
+        function renderAdminProducts() {
             const container = document.getElementById('adminProductsContainer');
-            const list = allProducts.filter(p => p.status === 'approved');
-
-            if (list.length === 0) {
-                container.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 1rem;">لا توجد منتجات منشورة.</p>';
+            if (allProducts.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-muted); text-align: center;">لا توجد سلع.</p>';
                 return;
             }
-
             container.innerHTML = '';
-            list.forEach(p => {
+            allProducts.forEach(p => {
                 const s = p.seller || {};
-                const sellerText = p.seller ? `البائع: ${s.firstName} ${s.lastName} (${s.phone} - ${s.wilaya})` : 'أضيف مباشرة';
                 container.innerHTML += `
                     <div class="order-card">
                         <div class="order-card-header">
-                            <span>منتج مقبول #${p.id}</span>
-                            <div>
-                                <button class="edit-btn" onclick="editProductAdmin(${p.id})"><i class="fa-solid fa-pen"></i> تعديل</button>
-                                <button class="delete-order-btn" onclick="deleteSingleProduct(${p.id})"><i class="fa-solid fa-trash"></i> حذف</button>
-                            </div>
+                            <span>#${p.id} - ${p.title}</span>
+                            <button class="delete-order-btn" onclick="deleteProduct(${p.id})"><i class="fa-solid fa-trash"></i> حذف</button>
                         </div>
-                        <div style="display: flex; gap: 10px; align-items: center; margin-top: 5px;">
-                            <img src="${p.image}" style="width: 60px; height: 60px; border-radius: 8px; object-fit: cover;">
-                            <div>
-                                <strong>${p.title}</strong>
-                                <div style="color: var(--success-color); font-weight: bold;">${p.price}</div>
-                                <div style="font-size: 0.8rem; color: var(--text-muted);">${sellerText}</div>
-                            </div>
+                        <div style="font-size: 0.85rem; color: var(--text-muted);">
+                            السعر: <strong>${p.price}</strong> | البائع: ${s.name || ''} (${s.phone || ''})
                         </div>
                     </div>
                 `;
             });
         }
 
-        function editProductAdmin(prodId) {
-            const p = allProducts.find(item => item.id === prodId);
-            const newPrice = prompt("أدخل السعر الجديد:", p.price.replace(' د.ج', ''));
-            if (newPrice !== null && newPrice.trim() !== "") {
-                const newDesc = prompt("أدخل الوصف الجديد:", p.description);
-                if (newDesc !== null) {
-                    database.ref('products/' + prodId).update({
-                        price: `${newPrice.trim()} د.ج`,
-                        description: newDesc
-                    }).then(() => {
-                        alert("تم التعديل بنجاح!");
-                        renderAdminApprovedProducts();
-                    });
-                }
+        function deleteProduct(id) {
+            if (confirm("هل تريد حذف هذا المنتج؟")) {
+                allProducts = allProducts.filter(p => p.id !== id);
+                saveProductsToStorage();
+                renderAdminProducts();
+                applyFilters();
             }
         }
 
-        function deleteSingleProduct(prodId) {
-            if (confirm("هل أنت تأكد من حذف هذا المنتج؟")) {
-                database.ref('products/' + prodId).remove().then(() => {
-                    renderAdminPendingProducts();
-                    renderAdminApprovedProducts();
-                });
+        function clearAllProducts() {
+            if (confirm("حذف كل المنتجات؟")) {
+                allProducts = [];
+                saveProductsToStorage();
+                renderAdminProducts();
+                applyFilters();
             }
         }
 
         function renderAdminOrders() {
             const container = document.getElementById('adminOrdersContainer');
-            database.ref('orders').once('value', (snapshot) => {
-                const data = snapshot.val();
-                if (!data) {
-                    container.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 2rem;">لا توجد أي طلبات شراء.</p>';
-                    return;
-                }
+            let orders = JSON.parse(localStorage.getItem('dz_store_orders')) || [];
+            
+            if (orders.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-muted); text-align: center;">لا توجد طلبات شراء مسجلة.</p>';
+                return;
+            }
 
-                container.innerHTML = '';
-                const orders = Object.values(data);
-                orders.reverse().forEach((order) => {
-                    container.innerHTML += `
-                        <div class="order-card">
-                            <div class="order-card-header">
-                                <span>طلب رقم #${order.id} - ${order.date}</span>
-                                <button class="delete-order-btn" onclick="deleteSingleOrder(${order.id})"><i class="fa-solid fa-xmark"></i> حذف</button>
-                            </div>
-                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.5rem; font-size: 0.95rem;">
-                                <div><strong>المنتج:</strong> ${order.productTitle} (${order.price})</div>
-                                <div><strong>الزبون:</strong> ${order.firstName} ${order.lastName}</div>
-                                <div><strong>الهاتف:</strong> ${order.phone}</div>
-                                <div><strong>العنوان:</strong> ${order.address}</div>
-                            </div>
+            container.innerHTML = '';
+            orders.forEach(o => {
+                container.innerHTML += `
+                    <div class="order-card">
+                        <div class="order-card-header">
+                            <span>طلب شراء #${o.id}</span>
+                            <span style="font-size: 0.75rem; color: var(--text-muted);">${o.date}</span>
                         </div>
-                    `;
-                });
+                        <div style="font-size: 0.9rem; display: flex; flex-direction: column; gap: 3px;">
+                            <div><strong>السلعة:</strong> ${o.productTitle} (${o.price})</div>
+                            <div><strong>الزبون:</strong> ${o.name} - الهاتف: ${o.phone}</div>
+                            <div><strong>العنوان:</strong> ${o.address}</div>
+                        </div>
+                    </div>
+                `;
             });
         }
 
-        function deleteSingleOrder(orderId) {
-            if (confirm("هل أنت تأكد من حذف الطلب؟")) {
-                database.ref('orders/' + orderId).remove().then(() => renderAdminOrders());
-            }
-        }
-
         function clearAllOrders() {
-            if (confirm("مسح كافة الطلبات؟")) {
-                database.ref('orders').remove().then(() => renderAdminOrders());
+            if (confirm("حذف كافة طلبات الشراء؟")) {
+                localStorage.removeItem('dz_store_orders');
+                renderAdminOrders();
             }
         }
-
-        listenToProducts();
     </script>
 </body>
 </html>
