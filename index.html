@@ -65,7 +65,8 @@
         .header-actions {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.8rem;
+            flex-wrap: wrap;
         }
 
         .search-box {
@@ -75,7 +76,7 @@
             border: 1px solid var(--border-color);
             border-radius: 50px;
             padding: 0.5rem 1.2rem;
-            width: 250px;
+            width: 220px;
         }
 
         .search-box input {
@@ -87,11 +88,31 @@
             margin-right: 8px;
         }
 
+        .sell-btn {
+            background: linear-gradient(90deg, #10b981, #059669);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.3s;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .sell-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(16, 185, 129, 0.5);
+        }
+
         .admin-btn {
             background: rgba(239, 68, 68, 0.2);
             color: #f87171;
             border: 1px solid rgba(239, 68, 68, 0.4);
-            padding: 0.5rem 1rem;
+            padding: 0.6rem 1rem;
             border-radius: 20px;
             cursor: pointer;
             font-weight: 700;
@@ -144,7 +165,6 @@
             flex: 1;
         }
 
-        /* تنسيق المنتجات للحاسوب (أفقي على شكل شبكة Grid) */
         .products-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -230,19 +250,18 @@
             font-weight: 700;
         }
 
-        /* التكيف للهاتف (عرض عمودي مريح) */
         @media (max-width: 768px) {
             header { flex-direction: column; }
             .container { padding: 1rem; }
             
             .products-grid {
                 display: flex;
-                flex-direction: column; /* ترتيب المنتجات عمودياً */
+                flex-direction: column;
                 gap: 1rem;
             }
 
             .product-card {
-                flex-direction: row; /* عرض بيانات كل منتج بشكل أفقي مدمج */
+                flex-direction: row;
                 height: 130px;
                 align-items: center;
             }
@@ -384,6 +403,15 @@
             gap: 1rem;
         }
 
+        .form-section-title {
+            color: var(--accent-color);
+            font-size: 1rem;
+            font-weight: 700;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.4rem;
+            margin-top: 0.5rem;
+        }
+
         .form-group {
             display: flex;
             flex-direction: column;
@@ -403,6 +431,30 @@
             color: white;
             outline: none;
             font-size: 0.95rem;
+        }
+
+        .price-input-wrapper {
+            display: flex;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .price-input-wrapper input {
+            border: none;
+            background: transparent;
+            flex: 1;
+        }
+
+        .price-currency {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.7rem 1rem;
+            font-weight: 800;
+            color: var(--success-color);
+            border-right: 1px solid var(--border-color);
+            user-select: none;
         }
 
         .form-group input[type="file"] {
@@ -427,6 +479,7 @@
             border-bottom: 1px solid var(--border-color);
             margin-bottom: 1.5rem;
             padding-bottom: 0.5rem;
+            overflow-x: auto;
         }
 
         .admin-tab-btn {
@@ -436,9 +489,10 @@
             padding: 0.5rem 1rem;
             cursor: pointer;
             font-weight: 700;
-            font-size: 1rem;
+            font-size: 0.95rem;
             border-radius: 8px;
             transition: 0.3s;
+            white-space: nowrap;
         }
 
         .admin-tab-btn.active {
@@ -471,14 +525,42 @@
             color: var(--accent-color);
         }
 
+        .approve-btn {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success-color);
+            border: 1px solid var(--success-color);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.85rem;
+            transition: 0.2s;
+        }
+
+        .approve-btn:hover {
+            background: var(--success-color);
+            color: white;
+        }
+
         .delete-order-btn {
             background: rgba(239, 68, 68, 0.2);
             color: var(--danger-color);
             border: none;
-            padding: 0.3rem 0.6rem;
+            padding: 0.4rem 0.8rem;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
+        }
+
+        .edit-btn {
+            background: rgba(251, 191, 36, 0.2);
+            color: var(--gold);
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            margin-left: 5px;
         }
 
         footer {
@@ -537,6 +619,11 @@
                 <i class="fa-solid fa-magnifying-glass"></i>
                 <input type="text" id="searchInput" placeholder="ابحث عن منتج..." onkeyup="filterProducts()">
             </div>
+            
+            <button class="sell-btn" onclick="openSellModal()">
+                <i class="fa-solid fa-store"></i> اعرض منتجك للبيع
+            </button>
+
             <button class="admin-btn" onclick="openAdminPanel()">
                 <i class="fa-solid fa-user-gear"></i> أدمن
             </button>
@@ -556,7 +643,87 @@
 
     <div class="container">
         <div class="products-grid" id="productsGrid">
-            <p style="color: var(--text-muted); padding: 1rem;">جاري تحميل المنتجات من السحابة...</p>
+            <p style="color: var(--text-muted); padding: 1rem;">جاري تحميل المنتجات المقبولة من السحابة...</p>
+        </div>
+    </div>
+
+    <!-- نافذة عرض المنتج للبيع (للعميل / البائع) -->
+    <div class="modal-overlay" id="sellModal">
+        <div class="modal-content" style="max-width: 600px;">
+            <button class="close-btn" onclick="closeModal('sellModal')">&times;</button>
+            <h2 style="margin-bottom: 0.5rem; color: var(--success-color);">
+                <i class="fa-solid fa-tags"></i> اعرض منتجك للبيع
+            </h2>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">أدخل بياناتك ومعلومات المنتج وسيتم مراجعته من الإدارة قبل نشره.</p>
+
+            <form class="order-form-container" onsubmit="handleUserSubmitProduct(event)">
+                <div class="form-section-title"><i class="fa-solid fa-user"></i> المعلومات الشخصية للبائع</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>الاسم الأول *</label>
+                        <input type="text" id="sellerFirstName" required placeholder="مثال: أحمد">
+                    </div>
+                    <div class="form-group">
+                        <label>اللقب *</label>
+                        <input type="text" id="sellerLastName" required placeholder="مثال: يونس">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>رقم الهاتف *</label>
+                        <input type="tel" id="sellerPhone" required placeholder="07XXXXXXXX">
+                    </div>
+                    <div class="form-group">
+                        <label>مكان الإقامة (الولاية والدائرة) *</label>
+                        <input type="text" id="sellerLocation" required placeholder="مثال: الشلف - أولاد فارس">
+                    </div>
+                </div>
+
+                <div class="form-section-title"><i class="fa-solid fa-box"></i> معلومات المنتج</div>
+                
+                <div class="form-group">
+                    <label>اسم المنتج *</label>
+                    <input type="text" id="userProdTitle" required placeholder="مثال: هاتف آيفون 11 بروماكس">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>سعر المنتج *</label>
+                        <div class="price-input-wrapper">
+                            <input type="number" id="userProdPriceNum" required placeholder="مثال: 45000">
+                            <span class="price-currency">د.ج (دينار جزائري)</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>القسم *</label>
+                        <select id="userProdCategory" required>
+                            <option value="electronics">إلكترونيات</option>
+                            <option value="clothing">ملابس وأزياء</option>
+                            <option value="books">كتب ومجلات</option>
+                            <option value="courses">كورسات وتدريب</option>
+                            <option value="games">ألعاب وتسلية</option>
+                            <option value="auto">سيارات وقطع غيار</option>
+                            <option value="movies">أفلام وترفيه</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>صور المنتج *</label>
+                    <input type="file" id="userProdFiles" accept="image/*" multiple required>
+                </div>
+
+                <div class="form-group">
+                    <label>وصف المنتج (اختياري)</label>
+                    <textarea id="userProdDesc" rows="3" placeholder="اكتب وصفاً مختصراً أو حالة المنتج..."></textarea>
+                </div>
+
+                <button type="submit" id="userSubmitBtn" class="btn-order-now" style="width: 100%; margin-top: 10px;">
+                    <i class="fa-solid fa-paper-plane"></i> إرسال للمراجعة والنشر
+                </button>
+            </form>
         </div>
     </div>
 
@@ -575,6 +742,8 @@
                     <div id="mRating" class="product-rating"></div>
                     <p id="mDesc" style="color: var(--text-muted); font-size: 0.95rem;"></p>
                     <div class="product-price" id="mPrice"></div>
+
+                    <div id="mSellerInfo" style="margin-top: 0.5rem; padding: 0.8rem; background: rgba(0,0,0,0.3); border-radius: 8px; font-size: 0.85rem; color: var(--text-muted);"></div>
                     
                     <button class="btn-order-now" onclick="openOrderModal()">
                         <i class="fa-solid fa-bag-shopping"></i> طلب شراء هذا المنتج الان
@@ -629,7 +798,7 @@
     <div class="modal-overlay" id="successModal">
         <div class="modal-content" style="max-width: 450px; text-align: center; padding: 2rem;">
             <i class="fa-solid fa-circle-check" style="font-size: 4rem; color: var(--success-color); margin-bottom: 1rem;"></i>
-            <h2 style="margin-bottom: 0.5rem;">تم تسجيل طلبك بنجاح!</h2>
+            <h2 style="margin-bottom: 0.5rem;">تمت العملية بنجاح!</h2>
             <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;" id="successMessageDetails"></p>
             <button class="cat-btn active" style="margin: 0 auto;" onclick="closeModal('successModal')">العودة للمتجر</button>
         </div>
@@ -637,70 +806,33 @@
 
     <!-- لوحة الأدمن -->
     <div class="modal-overlay" id="adminModal">
-        <div class="modal-content" style="max-width: 800px;">
+        <div class="modal-content" style="max-width: 850px;">
             <button class="close-btn" onclick="closeModal('adminModal')">&times;</button>
             
             <h2 style="margin-bottom: 1rem;"><i class="fa-solid fa-user-shield" style="color: var(--danger-color);"></i> لوحة التحكم (الأدمن)</h2>
 
             <div class="admin-tabs">
-                <button class="admin-tab-btn active" onclick="switchAdminTab('add-product', event)"><i class="fa-solid fa-plus-circle"></i> إضافة منتج جديد</button>
-                <button class="admin-tab-btn" onclick="switchAdminTab('manage-products', event)"><i class="fa-solid fa-boxes-stacked"></i> إدارة المنتجات المعروضة</button>
+                <button class="admin-tab-btn active" onclick="switchAdminTab('pending-products', event)"><i class="fa-solid fa-clock"></i> طلبات العرض للمعاينة والموافقة</button>
+                <button class="admin-tab-btn" onclick="switchAdminTab('manage-products', event)"><i class="fa-solid fa-boxes-stacked"></i> المنتجات المنشورة والمقبولة</button>
                 <button class="admin-tab-btn" onclick="switchAdminTab('orders', event)"><i class="fa-solid fa-list-check"></i> قائمة الطلبات</button>
             </div>
 
-            <!-- 1. قسم إضافة منتج جديد -->
-            <div id="adminAddProductSection">
-                <form class="order-form-container" onsubmit="handleAddNewProduct(event)">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>عنوان المنتج *</label>
-                            <input type="text" id="newProdTitle" required placeholder="مثال: حاسوب محمول">
-                        </div>
-                        <div class="form-group">
-                            <label>السعر *</label>
-                            <input type="text" id="newProdPrice" required placeholder="مثال: 45000 د.ج">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>القسم (Category) *</label>
-                        <select id="newProdCategory" required>
-                            <option value="electronics">إلكترونيات</option>
-                            <option value="clothing">ملابس وأزياء</option>
-                            <option value="books">كتب ومجلات</option>
-                            <option value="courses">كورسات وتدريب</option>
-                            <option value="games">ألعاب وتسلية</option>
-                            <option value="auto">سيارات وقطع غيار</option>
-                            <option value="movies">أفلام وترفيه</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label>اختر صور المنتج من الجهاز: *</label>
-                        <input type="file" id="newProdFiles" accept="image/*" multiple required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>وصف المنتج *</label>
-                        <textarea id="newProdDesc" rows="3" required placeholder="اكتب تفاصيل ومواصفات المنتج هنا..."></textarea>
-                    </div>
-
-                    <button type="submit" id="saveProdBtn" class="btn-order-now" style="width: 100%; margin-top: 10px;">
-                        <i class="fa-solid fa-cloud-arrow-up"></i> رفع ونشر المنتج في السحابة
-                    </button>
-                </form>
+            <!-- 1. قسم المنتجات المعلقة (للموافقة أو الرفض) -->
+            <div id="adminPendingProductsSection">
+                <h3 style="margin-bottom: 1rem; color: var(--gold);">منتجات في انتظار موافقتك</h3>
+                <div class="orders-list" id="adminPendingProductsContainer"></div>
             </div>
 
-            <!-- 2. قسم إدارة المنتجات المضافة -->
+            <!-- 2. قسم المنتجات المقبولة حاليا -->
             <div id="adminManageProductsSection" style="display: none;">
-                <h3 style="margin-bottom: 1rem;">المنتجات المعروضة حالياً</h3>
+                <h3 style="margin-bottom: 1rem;">المنتجات المعروضة للجميع حالياً</h3>
                 <div class="orders-list" id="adminProductsContainer"></div>
             </div>
 
             <!-- 3. قسم إدارة الطلبات -->
             <div id="adminOrdersSection" style="display: none;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                    <h3>الطلبات المسجلة (من السحابة)</h3>
+                    <h3>الطلبات المسجلة من الزبائن</h3>
                     <button class="delete-order-btn" onclick="clearAllOrders()"><i class="fa-solid fa-trash"></i> مسح كافة الطلبات</button>
                 </div>
                 <div class="orders-list" id="adminOrdersContainer"></div>
@@ -740,19 +872,24 @@
 
         const ADMIN_PASSWORD = "1234";
 
-        let products = [];
+        let allProducts = [];
+        let approvedProducts = [];
         let activeProductId = null;
 
         function listenToProducts() {
             database.ref('products').on('value', (snapshot) => {
                 const data = snapshot.val();
                 if (data) {
-                    products = Object.values(data);
-                    products.reverse();
+                    allProducts = Object.values(data);
+                    allProducts.reverse();
+                    
+                    // التصفية: عرض المنتجات المقبولة فقط في المتجر الرئيسي
+                    approvedProducts = allProducts.filter(p => p.status === 'approved');
                 } else {
-                    products = [];
+                    allProducts = [];
+                    approvedProducts = [];
                 }
-                displayProducts(products);
+                displayProducts(approvedProducts);
             });
         }
 
@@ -761,7 +898,7 @@
             grid.innerHTML = '';
 
             if (items.length === 0) {
-                grid.innerHTML = '<p style="color: var(--text-muted); padding: 1.5rem; width: 100%;">لا توجد منتجات معروضة حالياً.</p>';
+                grid.innerHTML = '<p style="color: var(--text-muted); padding: 1.5rem; width: 100%;">لا توجد منتجات معروضة ومقبولة حالياً.</p>';
                 return;
             }
             
@@ -790,17 +927,21 @@
             document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
             if(evt) evt.currentTarget.classList.add('active');
 
-            if(cat === 'all') displayProducts(products);
-            else displayProducts(products.filter(p => p.category === cat));
+            if(cat === 'all') displayProducts(approvedProducts);
+            else displayProducts(approvedProducts.filter(p => p.category === cat));
         }
 
         function filterProducts() {
             const query = document.getElementById('searchInput').value.toLowerCase();
-            displayProducts(products.filter(p => p.title.toLowerCase().includes(query)));
+            displayProducts(approvedProducts.filter(p => p.title.toLowerCase().includes(query)));
+        }
+
+        function openSellModal() {
+            document.getElementById('sellModal').style.display = 'flex';
         }
 
         function openProductModal(id) {
-            const product = products.find(p => p.id === id);
+            const product = approvedProducts.find(p => p.id === id);
             activeProductId = id;
 
             const mainImg = document.getElementById('mImage');
@@ -809,8 +950,20 @@
             document.getElementById('mTitle').innerText = product.title;
             document.getElementById('mCategory').innerText = product.categoryName || product.category;
             document.getElementById('mPrice').innerText = product.price;
-            document.getElementById('mDesc').innerText = product.description;
+            document.getElementById('mDesc').innerText = product.description || 'لا يوجد وصف متاح لهذا المنتج.';
             document.getElementById('mRating').innerHTML = '★'.repeat(product.rating || 5);
+
+            const sellerInfoDiv = document.getElementById('mSellerInfo');
+            if (product.seller) {
+                sellerInfoDiv.innerHTML = `
+                    <strong>معلومات البائع:</strong> ${product.seller.firstName} ${product.seller.lastName} | 
+                    <i class="fa-solid fa-location-dot"></i> ${product.seller.location} | 
+                    <i class="fa-solid fa-phone"></i> ${product.seller.phone}
+                `;
+                sellerInfoDiv.style.display = 'block';
+            } else {
+                sellerInfoDiv.style.display = 'none';
+            }
 
             const thumbsContainer = document.getElementById('mThumbnails');
             thumbsContainer.innerHTML = '';
@@ -833,7 +986,7 @@
         }
 
         function openOrderModal() {
-            const product = products.find(p => p.id === activeProductId);
+            const product = approvedProducts.find(p => p.id === activeProductId);
             document.getElementById('orderProductTitle').innerText = `${product.title} (${product.price})`;
             document.getElementById('productModal').style.display = 'none';
             document.getElementById('orderModal').style.display = 'flex';
@@ -843,9 +996,95 @@
             document.getElementById(modalId).style.display = 'none';
         }
 
+        function readFileAsDataURL(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function handleUserSubmitProduct(event) {
+            event.preventDefault();
+            const btn = document.getElementById('userSubmitBtn');
+            btn.disabled = true;
+            btn.innerText = "جاري إرسال الطلب للسحابة...";
+
+            const firstName = document.getElementById('sellerFirstName').value;
+            const lastName = document.getElementById('sellerLastName').value;
+            const phone = document.getElementById('sellerPhone').value;
+            const location = document.getElementById('sellerLocation').value;
+
+            const title = document.getElementById('userProdTitle').value;
+            const priceNum = document.getElementById('userProdPriceNum').value;
+            const priceFormatted = `${priceNum} د.ج`;
+
+            const categorySelect = document.getElementById('userProdCategory');
+            const category = categorySelect.value;
+            const categoryName = categorySelect.options[categorySelect.selectedIndex].text;
+            const desc = document.getElementById('userProdDesc').value || 'لا يوجد وصف';
+
+            const fileInput = document.getElementById('userProdFiles');
+            const files = Array.from(fileInput.files);
+
+            if (files.length === 0) {
+                alert("يرجى اختيار صورة واحدة على الأقل للمنتج.");
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> إرسال للمراجعة والنشر';
+                return;
+            }
+
+            try {
+                const imagesList = await Promise.all(files.map(file => readFileAsDataURL(file)));
+                const mainImg = imagesList[0];
+                const prodId = Date.now();
+
+                const newProduct = {
+                    id: prodId,
+                    title: title,
+                    category: category,
+                    categoryName: categoryName,
+                    price: priceFormatted,
+                    rating: 5,
+                    image: mainImg,
+                    images: imagesList,
+                    description: desc,
+                    status: "pending", // الحالة الافتراضية: قيد انتظار موافقة الأدمن
+                    seller: {
+                        firstName: firstName,
+                        lastName: lastName,
+                        phone: phone,
+                        location: location
+                    }
+                };
+
+                database.ref('products/' + prodId).set(newProduct, (err) => {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> إرسال للمراجعة والنشر';
+                    
+                    if (err) {
+                        alert("حدث خطأ أثناء الاتصال بالسحابة!");
+                    } else {
+                        document.getElementById('successMessageDetails').innerText = 
+                            `شكراً لك ${firstName}. تم إرسال منتجك (${title}) بنجاح، وسيتم نشره في المتجر فور مراجعته وقبوله من الإدارة.`;
+                        
+                        event.target.reset();
+                        closeModal('sellModal');
+                        document.getElementById('successModal').style.display = 'flex';
+                    }
+                });
+
+            } catch (err) {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> إرسال للمراجعة والنشر';
+                alert("حدث خطأ في معالجة الصور المختارة.");
+            }
+        }
+
         function handleOrderSubmit(event) {
             event.preventDefault();
-            const product = products.find(p => p.id === activeProductId);
+            const product = approvedProducts.find(p => p.id === activeProductId);
             
             const newOrder = {
                 id: Math.floor(100000 + Math.random() * 900000),
@@ -861,10 +1100,10 @@
 
             database.ref('orders/' + newOrder.id).set(newOrder, (error) => {
                 if (error) {
-                    alert("حدث خطأ أثناء إرسال الطلب، تأكد من ضبط قواعد Firebase Rules!");
+                    alert("حدث خطأ أثناء إرسال الطلب!");
                 } else {
                     document.getElementById('successMessageDetails').innerText = 
-                        `شكراً لك ${newOrder.firstName} ${newOrder.lastName}. تم تسجيل طلبك (#${newOrder.id}) بنجاح.`;
+                        `شكراً لك ${newOrder.firstName} ${newOrder.lastName}. تم تسجيل طلب الشراء (#${newOrder.id}) بنجاح.`;
                     
                     closeModal('orderModal');
                     document.getElementById('successModal').style.display = 'flex';
@@ -876,8 +1115,9 @@
         function openAdminPanel() {
             const pass = prompt("يرجى إدخال كلمة سر الأدمن:");
             if (pass === ADMIN_PASSWORD) {
+                renderAdminPendingProducts();
+                renderAdminApprovedProducts();
                 renderAdminOrders();
-                renderAdminProducts();
                 document.getElementById('adminModal').style.display = 'flex';
             } else if (pass !== null) {
                 alert("كلمة السر خاطئة!");
@@ -888,109 +1128,128 @@
             document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
             evt.currentTarget.classList.add('active');
 
-            document.getElementById('adminAddProductSection').style.display = tabName === 'add-product' ? 'block' : 'none';
+            document.getElementById('adminPendingProductsSection').style.display = tabName === 'pending-products' ? 'block' : 'none';
             document.getElementById('adminManageProductsSection').style.display = tabName === 'manage-products' ? 'block' : 'none';
             document.getElementById('adminOrdersSection').style.display = tabName === 'orders' ? 'block' : 'none';
         }
 
-        function readFileAsDataURL(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = () => resolve(reader.result);
-                reader.onerror = reject;
-                reader.readAsDataURL(file);
-            });
-        }
+        /* 1. عرض المنتجات التي تنتظر الموافقة */
+        function renderAdminPendingProducts() {
+            const container = document.getElementById('adminPendingProductsContainer');
+            const pendingList = allProducts.filter(p => p.status === 'pending');
 
-        async function handleAddNewProduct(event) {
-            event.preventDefault();
-            const btn = document.getElementById('saveProdBtn');
-            btn.disabled = true;
-            btn.innerText = "جاري الحفظ في السحابة...";
-
-            const title = document.getElementById('newProdTitle').value;
-            const price = document.getElementById('newProdPrice').value;
-            const categorySelect = document.getElementById('newProdCategory');
-            const category = categorySelect.value;
-            const categoryName = categorySelect.options[categorySelect.selectedIndex].text;
-            const desc = document.getElementById('newProdDesc').value;
-            
-            const fileInput = document.getElementById('newProdFiles');
-            const files = Array.from(fileInput.files);
-
-            if (files.length === 0) {
-                alert("يرجى اختيار صورة واحدة على الأقل.");
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> رفع ونشر المنتج في السحابة';
+            if (pendingList.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 1.5rem;">لا توجد أي طلبات منتجات معلقة تنتظر الموافقة.</p>';
                 return;
             }
 
-            try {
-                const imagesList = await Promise.all(files.map(file => readFileAsDataURL(file)));
-                const mainImg = imagesList[0];
-                const prodId = Date.now();
-
-                const newProduct = {
-                    id: prodId,
-                    title: title,
-                    category: category,
-                    categoryName: categoryName,
-                    price: price,
-                    rating: 5,
-                    image: mainImg,
-                    images: imagesList,
-                    description: desc
-                };
-
-                database.ref('products/' + prodId).set(newProduct, (err) => {
-                    btn.disabled = false;
-                    btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> رفع ونشر المنتج في السحابة';
-                    
-                    if (err) {
-                        alert("حدث خطأ أثناء رفع المنتج للسحابة!");
-                    } else {
-                        alert('تم إضافة المنتج وتخزينه في السحابة بنجاح!');
-                        event.target.reset();
-                        closeModal('adminModal');
-                    }
-                });
-
-            } catch (err) {
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> رفع ونشر المنتج في السحابة';
-                alert("حدث خطأ أثناء معالجة الصور.");
-            }
-        }
-
-        function renderAdminProducts() {
-            const container = document.getElementById('adminProductsContainer');
-            if (products.length === 0) {
-                container.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 1rem;">لا توجد منتجات في السحابة حالياً.</p>';
-                return;
-            }
             container.innerHTML = '';
-            products.forEach(p => {
+            pendingList.forEach(p => {
+                const s = p.seller || {};
                 container.innerHTML += `
-                    <div class="order-card" style="flex-direction: row; justify-content: space-between; align-items: center;">
-                        <div style="display: flex; align-items: center; gap: 10px;">
-                            <img src="${p.image}" style="width: 50px; height: 50px; border-radius: 8px; object-fit: cover;">
+                    <div class="order-card" style="border: 1px solid var(--gold);">
+                        <div class="order-card-header" style="color: var(--gold);">
+                            <span>طلب نشر منتج جديد (قيد المعاينة)</span>
                             <div>
-                                <strong>${p.title}</strong>
-                                <div style="font-size: 0.85rem; color: var(--success-color);">${p.price}</div>
+                                <button class="approve-btn" onclick="approveProduct(${p.id})"><i class="fa-solid fa-check"></i> قبول ونشر</button>
+                                <button class="delete-order-btn" onclick="deleteSingleProduct(${p.id})"><i class="fa-solid fa-xmark"></i> رفض وحذف</button>
                             </div>
                         </div>
-                        <button class="delete-order-btn" onclick="deleteSingleProduct(${p.id})"><i class="fa-solid fa-trash"></i> حذف المنتج</button>
+
+                        <div style="background: rgba(255,255,255,0.05); padding: 0.6rem; border-radius: 8px; font-size: 0.9rem; margin-bottom: 5px;">
+                            <strong>معلومات البائع:</strong> ${s.firstName || ''} ${s.lastName || ''} | 
+                            <strong>رقم الهاتف:</strong> <a href="tel:${s.phone}" style="color: var(--success-color);">${s.phone || ''}</a> | 
+                            <strong>الإقامة:</strong> ${s.location || ''}
+                        </div>
+
+                        <div style="display: flex; gap: 12px; align-items: center;">
+                            <img src="${p.image}" style="width: 70px; height: 70px; border-radius: 8px; object-fit: cover;">
+                            <div>
+                                <strong style="font-size: 1.05rem; color: white;">${p.title}</strong>
+                                <div style="color: var(--success-color); font-weight: bold;">${p.price}</div>
+                                <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 3px;">الوصف: ${p.description}</div>
+                            </div>
+                        </div>
                     </div>
                 `;
             });
         }
 
-        function deleteSingleProduct(prodId) {
-            if (confirm("هل أنت تأكد من حذف هذا المنتج نهائياً من المتجر والحاسوب والهاتف؟")) {
-                database.ref('products/' + prodId).remove().then(() => renderAdminProducts());
+        /* قبول المنتج ونشره */
+        function approveProduct(prodId) {
+            database.ref('products/' + prodId).update({
+                status: 'approved'
+            }).then(() => {
+                alert("تمت الموافقة على المنتج ونشره بنجاح للجمهور!");
+                renderAdminPendingProducts();
+                renderAdminApprovedProducts();
+            });
+        }
+
+        /* 2. عرض المنتجات المقبولة حالياً */
+        function renderAdminApprovedProducts() {
+            const container = document.getElementById('adminProductsContainer');
+            const list = allProducts.filter(p => p.status === 'approved');
+
+            if (list.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 1rem;">لا توجد منتجات منشورة حالياً.</p>';
+                return;
+            }
+
+            container.innerHTML = '';
+            list.forEach(p => {
+                const s = p.seller || {};
+                const sellerText = p.seller ? `البائع: ${s.firstName} ${s.lastName} (${s.phone} - ${s.location})` : 'أضيف مباشرة من الأدمن';
+                container.innerHTML += `
+                    <div class="order-card">
+                        <div class="order-card-header">
+                            <span>منتج مقبول #${p.id}</span>
+                            <div>
+                                <button class="edit-btn" onclick="editProductAdmin(${p.id})"><i class="fa-solid fa-pen"></i> تعديل السعر/الوصف</button>
+                                <button class="delete-order-btn" onclick="deleteSingleProduct(${p.id})"><i class="fa-solid fa-trash"></i> حذف</button>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 10px; align-items: center; margin-top: 5px;">
+                            <img src="${p.image}" style="width: 60px; height: 60px; border-radius: 8px; object-fit: cover;">
+                            <div>
+                                <strong>${p.title}</strong>
+                                <div style="color: var(--success-color); font-weight: bold;">${p.price}</div>
+                                <div style="font-size: 0.8rem; color: var(--text-muted);">${sellerText}</div>
+                                <div style="font-size: 0.85rem; color: var(--text-main); margin-top: 3px;">الوصف: ${p.description}</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function editProductAdmin(prodId) {
+            const p = allProducts.find(item => item.id === prodId);
+            const newPrice = prompt("أدخل السعر الجديد (اكتب الرقم فقط، سيتم إضافة د.ج تلقائياً):", p.price.replace(' د.ج', ''));
+            if (newPrice !== null && newPrice.trim() !== "") {
+                const newDesc = prompt("أدخل الوصف الجديد للمنتج:", p.description);
+                if (newDesc !== null) {
+                    database.ref('products/' + prodId).update({
+                        price: `${newPrice.trim()} د.ج`,
+                        description: newDesc
+                    }).then(() => {
+                        alert("تم التعديل بنجاح!");
+                        renderAdminApprovedProducts();
+                    });
+                }
             }
         }
 
+        function deleteSingleProduct(prodId) {
+            if (confirm("هل أنت تأكد من حذف/رفض هذا المنتج نهائياً؟")) {
+                database.ref('products/' + prodId).remove().then(() => {
+                    renderAdminPendingProducts();
+                    renderAdminApprovedProducts();
+                });
+            }
+        }
+
+        /* 3. عرض الطلبات */
         function renderAdminOrders() {
             const container = document.getElementById('adminOrdersContainer');
             container.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 1rem;">جاري تحميل الطلبات من السحابة...</p>';
@@ -998,7 +1257,7 @@
             database.ref('orders').once('value', (snapshot) => {
                 const data = snapshot.val();
                 if (!data) {
-                    container.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 2rem;">لا توجد أي طلبات حالياً.</p>';
+                    container.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 2rem;">لا توجد أي طلبات شراء حالياً.</p>';
                     return;
                 }
 
@@ -1008,7 +1267,7 @@
                     container.innerHTML += `
                         <div class="order-card">
                             <div class="order-card-header">
-                                <span>طلب رقم #${order.id} - ${order.date}</span>
+                                <span>طلب شراء رقم #${order.id} - ${order.date}</span>
                                 <button class="delete-order-btn" onclick="deleteSingleOrder(${order.id})"><i class="fa-solid fa-xmark"></i> حذف الطلب</button>
                             </div>
                             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.5rem; font-size: 0.95rem;">
