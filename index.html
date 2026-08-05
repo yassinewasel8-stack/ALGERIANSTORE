@@ -15,6 +15,7 @@
             --accent-hover: #4f46e5;
             --success-color: #10b981;
             --danger-color: #ef4444;
+            --whatsapp-color: #25D366;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --gold: #fbbf24;
@@ -171,6 +172,7 @@
             min-width: 280px;
             max-width: 280px;
             flex-shrink: 0;
+            position: relative;
         }
 
         .product-card:hover {
@@ -468,17 +470,26 @@
             color: white;
         }
 
-        .phone-link {
+        .whatsapp-link {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            background: white;
-            color: #0f172a;
-            padding: 0.6rem 1.2rem;
+            gap: 10px;
+            background: var(--whatsapp-color);
+            color: white;
+            padding: 0.8rem 1.6rem;
             border-radius: 30px;
             font-weight: 800;
+            font-size: 1.05rem;
             text-decoration: none;
-            margin-top: 10px;
+            margin-top: 12px;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .whatsapp-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(37, 211, 102, 0.5);
+            background: #20ba5a;
         }
 
         @media(max-width: 600px) {
@@ -518,7 +529,9 @@
     </div>
 
     <div class="container">
-        <div class="products-grid" id="productsGrid"></div>
+        <div class="products-grid" id="productsGrid">
+            <p style="color: var(--text-muted); padding: 1rem;">جاري تحميل المنتجات من السحابة...</p>
+        </div>
     </div>
 
     <!-- نافذة تفاصيل المنتج -->
@@ -605,6 +618,7 @@
 
             <div class="admin-tabs">
                 <button class="admin-tab-btn active" onclick="switchAdminTab('add-product', event)"><i class="fa-solid fa-plus-circle"></i> إضافة منتج جديد</button>
+                <button class="admin-tab-btn" onclick="switchAdminTab('manage-products', event)"><i class="fa-solid fa-boxes-stacked"></i> إدارة المنتجات المعروضة</button>
                 <button class="admin-tab-btn" onclick="switchAdminTab('orders', event)"><i class="fa-solid fa-list-check"></i> قائمة الطلبات</button>
             </div>
 
@@ -636,7 +650,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label>اختر صور المنتج من الحاسوب: *</label>
+                        <label>اختر صور المنتج من الجهاز: *</label>
                         <input type="file" id="newProdFiles" accept="image/*" multiple required>
                     </div>
 
@@ -645,13 +659,19 @@
                         <textarea id="newProdDesc" rows="3" required placeholder="اكتب تفاصيل ومواصفات المنتج هنا..."></textarea>
                     </div>
 
-                    <button type="submit" class="btn-order-now" style="width: 100%; margin-top: 10px;">
-                        <i class="fa-solid fa-cloud-arrow-up"></i> رفع ونشر المنتج في المتجر
+                    <button type="submit" id="saveProdBtn" class="btn-order-now" style="width: 100%; margin-top: 10px;">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> رفع ونشر المنتج في السحابة
                     </button>
                 </form>
             </div>
 
-            <!-- 2. قسم إدارة الطلبات -->
+            <!-- 2. قسم إدارة المنتجات المضافة (حذفها من السحابة) -->
+            <div id="adminManageProductsSection" style="display: none;">
+                <h3 style="margin-bottom: 1rem;">المنتجات المعروضة حالياً</h3>
+                <div class="orders-list" id="adminProductsContainer"></div>
+            </div>
+
+            <!-- 3. قسم إدارة الطلبات -->
             <div id="adminOrdersSection" style="display: none;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
                     <h3>الطلبات المسجلة (من السحابة)</h3>
@@ -666,8 +686,8 @@
         <div class="footer-banner">
             <h2><i class="fa-solid fa-bullhorn"></i> هل تريد عرض منتجاتك أو خدماتك معنا؟</h2>
             <p style="margin-top: 5px;">عرض ووضع السلع على المتجر حالياً <strong>مجاني بشكل كامل!</strong></p>
-            <a href="tel:0783373607" class="phone-link">
-                <i class="fa-solid fa-phone"></i> تواصل معي مباشرة: 0783373607
+            <a href="https://wa.me/213783373607" target="_blank" class="whatsapp-link">
+                <i class="fa-brands fa-whatsapp" style="font-size: 1.4rem;"></i> تواصل معي عبر الواتساب: 0783373607
             </a>
         </div>
         <p style="color: var(--text-muted); font-size: 0.85rem;">جميع الحقوق محفوظة &copy; 2026 - متجر الجزائر الإلكتروني</p>
@@ -678,7 +698,6 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
     <script>
-        // إعدادات ومفاتيح مشروع Firebase الخاص بك
         const firebaseConfig = {
             apiKey: "AIzaSyCUmO8u45HTjFli-kIWKJ6Rn_frK96_wzM",
             authDomain: "mydzstore.firebaseapp.com",
@@ -690,35 +709,36 @@
             measurementId: "G-Q6LECZFZJF"
         };
 
-        // تهيئة الاتصال بـ Firebase Realtime Database
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
         const ADMIN_PASSWORD = "1234";
 
-        const defaultProducts = [
-            {
-                id: 1,
-                title: "حاسوب محمول للدراسة والبرمجة",
-                category: "electronics",
-                categoryName: "إلكترونيات",
-                price: "45000 د.ج",
-                rating: 5,
-                image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500",
-                images: [
-                    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500",
-                    "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=500"
-                ],
-                description: "حاسوب محمول بمواصفات ممتازة للدراسة والتصفح والعمل على المشاريع البرمجية."
-            }
-        ];
-
-        let products = JSON.parse(localStorage.getItem('myStoreProducts')) || defaultProducts;
+        let products = [];
         let activeProductId = null;
+
+        // جلب المنتجات المباشرة من السحابة تلقائياً وتحديث الصفحة عند إضافة أي منتج جديد
+        function listenToProducts() {
+            database.ref('products').on('value', (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    products = Object.values(data);
+                    products.reverse();
+                } else {
+                    products = [];
+                }
+                displayProducts(products);
+            });
+        }
 
         function displayProducts(items) {
             const grid = document.getElementById('productsGrid');
             grid.innerHTML = '';
+
+            if (items.length === 0) {
+                grid.innerHTML = '<p style="color: var(--text-muted); padding: 1.5rem; width: 100%;">لا توجد منتجات معروضة حالياً.</p>';
+                return;
+            }
             
             items.forEach(product => {
                 const starsHtml = '★'.repeat(product.rating || 5);
@@ -796,7 +816,6 @@
             document.getElementById(modalId).style.display = 'none';
         }
 
-        // إرسال الطلبات وحفظها في قاعدة بيانات Firebase السحابية
         function handleOrderSubmit(event) {
             event.preventDefault();
             const product = products.find(p => p.id === activeProductId);
@@ -831,6 +850,7 @@
             const pass = prompt("يرجى إدخال كلمة سر الأدمن:");
             if (pass === ADMIN_PASSWORD) {
                 renderAdminOrders();
+                renderAdminProducts();
                 document.getElementById('adminModal').style.display = 'flex';
             } else if (pass !== null) {
                 alert("كلمة السر خاطئة!");
@@ -841,13 +861,9 @@
             document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
             evt.currentTarget.classList.add('active');
 
-            if (tabName === 'add-product') {
-                document.getElementById('adminAddProductSection').style.display = 'block';
-                document.getElementById('adminOrdersSection').style.display = 'none';
-            } else {
-                document.getElementById('adminAddProductSection').style.display = 'none';
-                document.getElementById('adminOrdersSection').style.display = 'block';
-            }
+            document.getElementById('adminAddProductSection').style.display = tabName === 'add-product' ? 'block' : 'none';
+            document.getElementById('adminManageProductsSection').style.display = tabName === 'manage-products' ? 'block' : 'none';
+            document.getElementById('adminOrdersSection').style.display = tabName === 'orders' ? 'block' : 'none';
         }
 
         function readFileAsDataURL(file) {
@@ -859,8 +875,12 @@
             });
         }
 
+        // رفع وتخزين المنتجات مباشرة في قاعدة بيانات Firebase السحابية
         async function handleAddNewProduct(event) {
             event.preventDefault();
+            const btn = document.getElementById('saveProdBtn');
+            btn.disabled = true;
+            btn.innerText = "جاري الحفظ في السحابة...";
 
             const title = document.getElementById('newProdTitle').value;
             const price = document.getElementById('newProdPrice').value;
@@ -874,15 +894,18 @@
 
             if (files.length === 0) {
                 alert("يرجى اختيار صورة واحدة على الأقل.");
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> رفع ونشر المنتج في السحابة';
                 return;
             }
 
             try {
                 const imagesList = await Promise.all(files.map(file => readFileAsDataURL(file)));
                 const mainImg = imagesList[0];
+                const prodId = Date.now();
 
                 const newProduct = {
-                    id: Date.now(),
+                    id: prodId,
                     title: title,
                     category: category,
                     categoryName: categoryName,
@@ -893,20 +916,55 @@
                     description: desc
                 };
 
-                products.unshift(newProduct);
-                localStorage.setItem('myStoreProducts', JSON.stringify(products));
-
-                displayProducts(products);
-                alert('تم إضافة المنتج بنجاح!');
-                event.target.reset();
-                closeModal('adminModal');
+                database.ref('products/' + prodId).set(newProduct, (err) => {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> رفع ونشر المنتج في السحابة';
+                    
+                    if (err) {
+                        alert("حدث خطأ أثناء رفع المنتج للسحابة!");
+                    } else {
+                        alert('تم إضافة المنتج وتخزينه في السحابة بنجاح!');
+                        event.target.reset();
+                        closeModal('adminModal');
+                    }
+                });
 
             } catch (err) {
-                alert("حدث خطأ أثناء تحميل الصور، يرجى المحاولة مرة أخرى.");
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> رفع ونشر المنتج في السحابة';
+                alert("حدث خطأ أثناء معالجة الصور.");
             }
         }
 
-        // جلب الطلبات من قاعدة البيانات السحابية وعرضها في لوحة الأدمن
+        function renderAdminProducts() {
+            const container = document.getElementById('adminProductsContainer');
+            if (products.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 1rem;">لا توجد منتجات في السحابة حالياً.</p>';
+                return;
+            }
+            container.innerHTML = '';
+            products.forEach(p => {
+                container.innerHTML += `
+                    <div class="order-card" style="flex-direction: row; justify-content: space-between; align-items: center;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <img src="${p.image}" style="width: 50px; height: 50px; border-radius: 8px; object-fit: cover;">
+                            <div>
+                                <strong>${p.title}</strong>
+                                <div style="font-size: 0.85rem; color: var(--success-color);">${p.price}</div>
+                            </div>
+                        </div>
+                        <button class="delete-order-btn" onclick="deleteSingleProduct(${p.id})"><i class="fa-solid fa-trash"></i> حذف المنتج</button>
+                    </div>
+                `;
+            });
+        }
+
+        function deleteSingleProduct(prodId) {
+            if (confirm("هل أنت تأكد من حذف هذا المنتج نهائياً من المتجر والحاسوب والهاتف؟")) {
+                database.ref('products/' + prodId).remove().then(() => renderAdminProducts());
+            }
+        }
+
         function renderAdminOrders() {
             const container = document.getElementById('adminOrdersContainer');
             container.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 1rem;">جاري تحميل الطلبات من السحابة...</p>';
@@ -954,7 +1012,7 @@
             }
         }
 
-        displayProducts(products);
+        listenToProducts();
     </script>
 </body>
 </html>
